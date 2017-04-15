@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %} {{ 'base.title'|trans}} {% endblock %}</title>
         {% block stylesheets %}
             {% stylesheets 'css/app.css'
             filter='cssrewrite' output='css/compiled/app.css' %}
@@ -12,13 +12,58 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+<div class="top-bar">
+  <div class="top-bar-left">
+    <ul class="dropdown menu" data-dropdown-menu>
+    <li>
+        {% image 'images/jpg/logo-louvre.jpg' %}
+            <img src="{{ asset_url }}" alt="Logo du Louvre" />
+        {% endimage %}
+    </li>
+      <li class="menu-text">Billeterie officielle</li>
+    </ul>
+  </div>
+  <div class="top-bar-right">
+    <ul class="dropdown menu" data-dropdown-menu>
+    <li>
+        <a href="#" class="button dropdown">Select language</a>
+        <ul class="menu vertical text-right">
+          <li class="hover"><a href="#">Français {% image 'images/png/drapeau français.png' %}<img width="50px" src="{{ asset_url }}" alt="Drapeau français" />{% endimage %}</a></li>
+          <li class="hover"><a href="#">English {% image 'images/png/drapeau britannique.png' %}<img width="50px" src="{{ asset_url }}" alt="Drapeau britannique" />{% endimage %}</a></li>
+          <li class="hover"><a href="#">Español {% image 'images/png/drapeau espagnol.png' %}<img width="50px" src="{{ asset_url }}" alt="Drapeau espagnol" />{% endimage %}</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
     <div class="row">
         {% block body %}{% endblock %}
     </div>
     {% block javascripts %}
-        {% javascripts 'js/**/*' output='js/app.js'%}
+        {% javascripts  'js/vendor/*'
+                        'js/*'
+    output='js/app.js' %}
             <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
     {% endblock %}
+      <script>
+    $(document).foundation();
+  </script>
     </body>
+    <footer class="row align-middle">
+        <div class="large-2 medium-2 small-12 columns text-center">
+        <p>
+            {% image 'images/svg/*.svg' %}
+                <img width="20px" src="{{ asset_url }}" alt="Example" />
+            {% endimage %}
+            </p>
+        </div>   
+        <div class="large-8 medium-8 small-12 columns text-center">
+            <p>© Musée du Louvre - Tous droits de reproduction réservés</p>
+            <p>Contactez-nous - CGV -Aide/FAQ</p>
+        </div>
+        <div class="large-2 medium-2 small-12 columns text-center">       
+            <p><a href="#" class="button expanded">↑ Haut de page ↑</a></p>
+        </div>
+    </footer>
 </html>

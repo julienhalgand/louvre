@@ -1,5 +1,74 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>test</h1>
+<div class="large-12 columns text-center">
+    <h1>Horaires et Tarifs</h1>
+    <h1>Alerte attentat - Vigipirate</h1>
+    {% image 'images/jpg/louvre-logo-vigipirate-2017.jpg' %}
+        <img src="{{ asset_url }}" alt="Example" />
+    {% endimage %}
+    <p>A la suite des attentats survenus à Paris dans la nuit du vendredi 13 au samedi 14 novembre 2015, et afin d’assurer la sécurité des visiteurs, le musée du Louvre applique les mesures préventives décidées par le gouvernement pour les administrations publiques.
+Le musée du Louvre est ouvert dans les conditions habituelles. Il est recommandé de ne pas venir au musée avec des sacs et des valises. Les valises et sacs de grande contenance sont interdits. Dans tous les cas, seuls les bagages n’excédant pas les tailles maximales (55cm x 35cm x 20cm) sont autorisés et doivent être déposés aux vestiaires après avoir été contrôlés.
+Toutes les personnes doivent se prêter aux contrôles de sécurité. Le musée du Louvre remercie par avance ses visiteurs de faire preuve de compréhension quant au ralentissement induit par les contrôles aux entrées.
+En cas d’incident, il faut d’abord s’échapper de la zone de danger, alerter le personnel de surveillance, obéir à ses injonctions, le public pourra être confiné ou évacué dans des zones sécurisées dans l’attente de l’arrivée de la Police.</p>
+    <h1>Horaires</h1>
+    <table class="text-center">
+        <thead>
+            <tr>
+                <th class="text-center">Jours fériés en 2017</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr><td>Dimanche 16 avril</td></tr>
+                <tr><td>Lundi 17 avril</td></tr>
+                <tr><td>Lundi 1er mai</td></tr>
+                <tr><td>Lundi 8 mai</td></tr>
+                <tr><td>Jeudi 25 mai</td></tr>
+                <tr><td>Dimanche 4 juin</td></tr>
+                <tr><td>Lundi 5 juin</td></tr>
+                <tr><td>Vendredi 14 juillet</td></tr>
+                <tr><td>Mardi 15 août</td></tr>
+                <tr><td>Mercredi 1er novembre</td></tr>
+                <tr><td>Samedi 11 novembre</td></tr>
+                <tr><td>Lundi 25 décembre</td></tr>
+        </tbody>
+    </table>
+    <p>*L'évacuation des salles débute à 17h30.</p>
+    <h1>Tarifs</h1>
+    <table class="text-center">
+        <thead>
+            <tr>
+                <th>Age</th>
+                <th>Tarif normal à la journée</th>
+                <th>Tarif réduit à la journée</th>
+                <th>Tarif normal à la demi-journée</th>
+                <th>Tarif réduit à la demi-journée</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>+ de 60 ans</td>
+                <td>12 €</td>
+                <td>X</td>
+                <td>6 €</td>
+                <td>X</td>
+            </tr>
+            <tr>
+                <td>+ de 12 ans</td>
+                <td>16 €</td>
+                <td>10 €</td>
+                <td>8 €</td>
+                <td>5 €</td>
+            </tr>
+            <tr>
+                <td>+ de 4 ans</td>
+                <td>8 €</td>
+                <td>X</td>
+                <td>4 €</td>
+                <td>X</td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="/step1" class="button">Réserver vos billets</a>
+</div>
 {% endblock %}
