@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %} {{ 'base.title'|trans}} {% endblock %}</title>
+        <title>{% block title %} {{ 'base.title'|trans }} {% endblock %}</title>
         {% block stylesheets %}
             {% stylesheets 'css/app.css'
             filter='cssrewrite' output='css/compiled/app.css' %}
@@ -40,15 +40,19 @@
         {% block body %}{% endblock %}
     </div>
     {% block javascripts %}
-        {% javascripts  'js/vendor/*'
+        {% javascripts  'js/vendor/jquery.js'
+                        'js/vendor/motionui.js'
+                        'js/vendor/whatinput.js'
+                        'js/vendor/modernizr.js'
+                        'js/vendor/foundation.js'
+                        'js/vendor/fdatepicker.js'
+                        'js/vendor/fdatepickerlocales/foundation-datepicker.fr.js'
+                        'js/vendor/fdatepickerlocales/foundation-datepicker.es.js'
                         'js/*'
     output='js/app.js' %}
             <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
     {% endblock %}
-      <script>
-    $(document).foundation();
-  </script>
     </body>
     <footer class="row align-middle">
         <div class="large-2 medium-2 small-12 columns text-center">

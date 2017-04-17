@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<form action="/validate" method="post" class="text-center" data-abide novalidate>
+  <div data-abide-error class="alert callout" style="display: none;">
+    <p><i class="fi-alert"></i> Les champs en rouge sont invalides.</p>
+  </div>
+  <div class="row">
+    <div class="small-12 columns">
+      <label>La date de votre visite
+        <input type="date" class="span2" id="dp1" required pattern="month_day_year">
+        <span class="form-error">
+          Yo, you had better fill this out, it's required.
+        </span>
+      </label>
+      <p class="help-text" id="exampleHelpText">Here's how you use this input field!</p>
+    </div>
+    <div class="small-12 columns">
+      <label>Votre email
+        <input type="text" placeholder="example@example.example" aria-describedby="exampleHelpTex" required pattern="email">
+      </label>
+      <p class="help-text" id="exampleHelpTex">This input is ignored by Abide using `data-abide-ignore`</p>
+    </div>
+    <div class="small-12 columns">
+      <label>Type de billet
+        <select id="select" required>
+          <option value="allDay" selected>Journée</option>
+          <option value="halfDay">Demi-journée</option>
+        </select>
+      </label>
+      <p class="help-text" id="exampleHelpText">Enter a password please.</p>
+    </div>
+    <div class="small-12 columns">
+      <label>Nombre de billets
+        <input type="number" value=1 aria-describedby="exampleHelpText2" required pattern="number">
+        <span class="form-error">
+          Hey, passwords are supposed to match!
+        </span>
+      </label>
+      <p class="help-text" id="exampleHelpText2">This field is using the `data-equalto="password"` attribute, causing it to match the password field above.</p>
+    </div>
+  </div>
+  <div class="row">
+    <fieldset class="large-6 columns">
+      <button class="button" type="submit" value="Submit">Passer à l'étape suivante</button>
+    </fieldset>
+    <fieldset class="large-6 columns">
+      <button class="button" type="reset" value="Reset">Reset</button>
+    </fieldset>
+  </div>
+</form>
+{% endblock %}
