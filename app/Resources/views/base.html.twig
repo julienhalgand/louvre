@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ 'base.lang'|trans }}">
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %} {{ 'base.title'|trans }} {% endblock %}</title>
@@ -36,9 +36,7 @@
     </ul>
   </div>
 </div>
-    <div class="row">
         {% block body %}{% endblock %}
-    </div>
     {% block javascripts %}
         {% javascripts  'js/vendor/jquery.js'
                         'js/vendor/motionui.js'

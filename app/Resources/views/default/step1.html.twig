@@ -1,7 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<form action="/validate" method="post" class="text-center" data-abide novalidate>
+<h2>Étape 1 sur 3</h2>
+{{ form_start(form, { 'method': 'POST', 'attr':{ 'novalidate': 'novalidate', 'data-abide': null, 'class': 'text-center'}}) }}
+  <div data-abide-error class="alert callout" style="display: none;">
+    <p><i class="fi-alert"></i>{{'step1.formError'|trans}}</p>
+  </div>
+{{ form_widget(form) }}
+  <div class="row">
+    <fieldset class="large-6 columns">
+      <button class="button" type="submit" value="Submit">Passer à l'étape suivante</button>
+    </fieldset>
+    <fieldset class="large-6 columns">
+      <button class="button" type="reset" value="Reset">Reset</button>
+    </fieldset>
+  </div>
+{{ form_end(form) }}
+{#<form action="/validateStep1" method="post" class="text-center" data-abide novalidate>
   <div data-abide-error class="alert callout" style="display: none;">
     <p><i class="fi-alert"></i> Les champs en rouge sont invalides.</p>
   </div>
@@ -48,5 +63,5 @@
       <button class="button" type="reset" value="Reset">Reset</button>
     </fieldset>
   </div>
-</form>
+</form>#}
 {% endblock %}
