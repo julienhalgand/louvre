@@ -2,7 +2,7 @@
 <html lang="{{ 'base.lang'|trans }}">
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %} {{ 'base.title'|trans }} {% endblock %}</title>
+        <title>{% block title %}{% endblock %}</title>
         {% block stylesheets %}
             {% stylesheets 'css/app.css'
             filter='cssrewrite' output='css/compiled/app.css' %}
@@ -12,13 +12,16 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+
 <div class="top-bar">
   <div class="top-bar-left">
     <ul class="dropdown menu" data-dropdown-menu>
     <li>
+    <a href="/">
         {% image 'images/jpg/logo-louvre.jpg' %}
             <img src="{{ asset_url }}" alt="Logo du Louvre" />
         {% endimage %}
+    </a>
     </li>
       <li class="menu-text">Billeterie officielle</li>
     </ul>
@@ -28,9 +31,9 @@
     <li>
         <a href="#" class="button dropdown">Select language</a>
         <ul class="menu vertical text-right">
-          <li class="hover"><a href="#">Français {% image 'images/png/drapeau français.png' %}<img width="50px" src="{{ asset_url }}" alt="Drapeau français" />{% endimage %}</a></li>
-          <li class="hover"><a href="#">English {% image 'images/png/drapeau britannique.png' %}<img width="50px" src="{{ asset_url }}" alt="Drapeau britannique" />{% endimage %}</a></li>
-          <li class="hover"><a href="#">Español {% image 'images/png/drapeau espagnol.png' %}<img width="50px" src="{{ asset_url }}" alt="Drapeau espagnol" />{% endimage %}</a></li>
+          <li class="hover"><a href="{{ path(app.request.attributes.get('_route'),{'_locale':'fr'})}}">Français {% image 'images/png/fr.png' %}<img width="50px" src="{{ asset_url }}" alt="Drapeau français" />{% endimage %}</a></li>
+          <li class="hover"><a href="{{ path(app.request.attributes.get('_route'),{'_locale':'en'})}}">English {% image 'images/png/en.png' %}<img width="50px" src="{{ asset_url }}" alt="Drapeau britannique" />{% endimage %}</a></li>
+          <li class="hover"><a href="{{ path(app.request.attributes.get('_route'),{'_locale':'es'})}}">Español {% image 'images/png/es.png' %}<img width="50px" src="{{ asset_url }}" alt="Drapeau espagnol" />{% endimage %}</a></li>
         </ul>
       </li>
     </ul>

@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as BillAssert;
 
 /**
  * Bill
@@ -40,6 +41,8 @@ class Bill
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=100)
+     * @Assert\NotBlank
+     * @Assert\Email
      */
     private $email;
 
@@ -47,6 +50,9 @@ class Bill
      * @var \DateTime
      *
      * @ORM\Column(name="date_of_booking", type="datetime")
+     * @Assert\NotBlank
+     * @Assert\DateTime
+     * @BillAssert\ValidDateOfBooking
      */
     private $dateOfBooking;
 
@@ -55,8 +61,10 @@ class Bill
      *
      * @ORM\Column(name="ticket_type", type="string", length=12)
      * @Assert\Choice(
-     *  choices = {"allJourney", "halfJourney"}   
+     *  choices = {"allJourney", "halfJourney"},
+     *  strict = true   
      * )
+     * @Assert\NotBlank
      */
     private $ticketType;
 
@@ -64,6 +72,9 @@ class Bill
      * @var int
      *
      * @ORM\Column(name="number_of_tickets", type="integer")
+     * @Assert\NotBlank
+     * @Assert\GreaterThan(value = 0)
+     * @Assert\LessThanOrEqual(1000)
      */
      private $numberOfTickets;
 
@@ -173,7 +184,7 @@ class Bill
      */
     public function setDateOfBooking($dateOfBooking)
     {
-        $this->dateOfBooking = $dateOfBooking;
+        $this->dateOfBooking = new \DateTime($dateOfBooking);
 
         return $this;
     }

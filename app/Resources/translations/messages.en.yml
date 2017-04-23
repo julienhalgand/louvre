@@ -1,2 +1,13 @@
+Date of booking: Day of your visit
+dateOfBookingPlaceHolder: 01/01/2000
+Email: Votre adresse email
+example@example.example: example@example.example
+Journée: Journée
+Demi-journée: Demi-journée
+Ticket type: Type de ticket
+Number of tickets: Nombre de tickets
 base:
+  title: Accueil
   lang: en
+step1:
+  formError: Les champs en rouge sont invalides.

@@ -1,3 +1,10 @@
+home:
+    path: /
+    defaults:
+        _controller: AppBundle:Pages:homepage
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
+    prefix: /{_locale}
+    requirements: 
+        _locale: fr|en|es
