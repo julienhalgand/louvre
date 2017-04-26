@@ -3,7 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as TicketAssert;
 /**
  * Ticket
  *
@@ -39,6 +40,7 @@ class Ticket
      * @var string
      *
      * @ORM\Column(name="lastname", type="string", length=50)
+     * @Assert\NotBlank
      */
     private $lastname;
 
@@ -46,6 +48,7 @@ class Ticket
      * @var string
      *
      * @ORM\Column(name="firstname", type="string", length=50)
+     * @Assert\NotBlank
      */
     private $firstname;
 
@@ -53,6 +56,9 @@ class Ticket
      * @var \DateTime
      *
      * @ORM\Column(name="date_of_birth", type="datetime")
+     * @Assert\NotBlank
+     * @Assert\DateTime
+     * @TicketAssert\ValidDateOfBirth
      */
     private $dateOfBirth;
 
@@ -60,6 +66,10 @@ class Ticket
      * @var string
      *
      * @ORM\Column(name="country_code", type="string", length=2)
+     * @Assert\NotBlank
+     *  choices = {"AF","AL","DZ","AS","AD","AO","AI","AQ","AG","AR","AM","AW","AU","AT","AZ","BS","BH","BD","BB","BY","BE","BZ","BJ","BM","BT","BO","BA","BW","BV","BR","IO","BN","BG","BF","BI","KH","CM","CA","CV","KY","CF","TD","CL","CN","CX","CC","CO","KM","CD","CG","CK","CR","CI","HR","CU","CY","CZ","CS","DK","DJ","DM","DO","TP","EC","EG","SV","GQ","ER","EE","ET","FK","FO","FJ","FI","FR","GF","PF","TF","GA","GM","GE","DE","GH","GI","GB","GR","GL","GD","GP","GU","GT","GN","GW","GY","HT","HM","VA","HN","HK","HU","IS","IN","ID","IR","IQ","IE","IL","IT","JM","JP","JO","KZ","KE","KI","KP","KR","KW","KG","LA","LV","LB","LS","LR","LY","LI","LT","LU","MO","MK","MG","MW","MY","MV","ML","MT","MH","MQ","MR","MU","YT","MX","FM","MD","MC","MN","MS","MA","MZ","MM","NA","NR","NP","NL","AN","NC","NZ","NI","NE","NG","NU","NF","MP","NO","OM","PK","PW","PS","PA","PG","PY","PE","PH","PN","PL","PT","PR","QA","RE","RO","SU","RU","RW","SH","KN","LC","PM","VC","WS","SM","ST","SA","RS","SN","SC","SL","SG","SK","SI","SB","SO","ZA","GS","ES","LK","SD","SR","SJ","SZ","SE","CH","SY","TW","TJ","TZ","TH","TG","TK","TO","TT","TE","TN","TR","TM","TC","TV","UG","UA","AE","GB","US","UM","UY","UZ","VU","VA","VE","VN","VI","VQ","WF","EH","YE","YU","ZR","ZM","ZW"}
+     *  strict = true   
+     * )
      */
     private $countryCode;
 
@@ -72,10 +82,10 @@ class Ticket
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="order_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="Bill", inversedBy="tickets")
+     * @ORM\JoinColumn(name="bill_id", referencedColumnName="id")
      */
-    private $orderId;
+    private $bill;
 
     /**
      * @var int
@@ -200,7 +210,7 @@ class Ticket
      */
     public function setDateOfBirth($dateOfBirth)
     {
-        $this->dateOfBirth = $dateOfBirth;
+        $this->dateOfBirth = new \DateTime($dateOfBirth);
 
         return $this;
     }
@@ -208,9 +218,22 @@ class Ticket
     /**
      * Get dateOfBirth
      *
-     * @return \DateTime
+     * @return \String
      */
     public function getDateOfBirth()
+    {
+        if (is_null($this->dateOfBirth)){
+            return $this->dateOfBirth;
+        }else{
+            return strftime("%A",$this->dateOfBirth->getTimestamp());
+        }
+    }
+    /**
+     * Get getDateOfBirthObject
+     *
+     * @return \DateTime
+     */
+    public function getDateOfBirthObject()
     {
         return $this->dateOfBirth;
     }
@@ -309,6 +332,52 @@ class Ticket
     public function getPrice()
     {
         return $this->price;
+    }
+    /**
+     * Gets triggered only on insert
+
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->setCreatedAt(new \DateTime("now"));
+    }
+    /**
+     * Gets triggered every time on update
+
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate()
+    {
+        $this->setUpdatedAt(new \DateTime("now"));
+    }
+
+    public function getTicketPrice($ticketType){
+        //Calcul des prix
+        $normalPrice            = 16;
+        $senoirPrice            = 12;
+        $childPrice             = 8;
+        $reducedPriceDividedBy  = 2;
+        //calcul de l'age
+        $age            = intval(strftime('%Y')) - intval($this->dateOfBirth->format('Y'));
+
+        $ticketPrice    = 16;
+        if($age > 60){
+            $ticketPrice = 12;
+        }elseif($age < 12 && $age > 4){
+            $ticketPrice = 8;
+        }elseif($age < 4){
+            $ticketPrice = 0;
+        }
+        if($this->reducedPrice && $age > 12 && $age < 60){
+            $ticketPrice = 10;
+        }else{
+            $this->reducedPrice = false;
+        }
+        if($ticketType == "halfJourney" && $ticketPrice != 0){
+            $ticketPrice /= 2;
+        }
+        return $ticketPrice;
     }
 }
 

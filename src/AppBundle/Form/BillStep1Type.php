@@ -23,8 +23,7 @@ class BillStep1Type extends AbstractType
                     'Demi-journée' => 'halfJourney',
                 )   
             ))
-            ->add('number_of_tickets', IntegerType::class, array('attr' => array('value' => 1)))
-        ;
+            ->add('number_of_tickets', IntegerType::class, array('attr' => array('value' => 1)));
     }
 
     public function configureOptions(OptionsResolver $resolver)

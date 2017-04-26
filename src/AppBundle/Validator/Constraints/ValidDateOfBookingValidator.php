@@ -15,13 +15,13 @@ class ValidDateOfBookingValidator extends ConstraintValidator
         //Si date est inférieur à la date d'aujourd'hui et inférieur à date d'aujourd'hui+1 an
         if ($dateNow > $value || $dateNow->modify('+1 year') < $value){
             $this->context->buildViolation($constraint->message)
-            ->setParameter('{{string}}', $value->format('Y-m-d'))
+            //->setParameter('{{string}}', $value->format('Y-m-d'))
             ->addViolation();
         }
         //Jours fériés
         if(self::holidaysTest($value)){
             $this->context->buildViolation($constraint->message)
-            ->setParameter('{{string}}', $value->format('Y-m-d'))
+            //->setParameter('{{string}}', $value->format('Y-m-d'))
             ->addViolation();
         }
     }

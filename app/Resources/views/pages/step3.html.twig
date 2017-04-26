@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% block title %}Réservation étape 2{% endblock %}
+{% block body %}
+<h2>Étape 3 sur 3</h2>
+<table>
+  <thead>
+    <tr>
+      <th>{{'step3.firstname'|trans}}</th>
+      <th>{{'step3.lastname'|trans}}</th>
+      <th>{{'step3.dateOfBirth'|trans}}</th>
+      <th>{{'step3.reducedPrice'|trans}}</th>
+      <th>{{'step3.price'|trans}}</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for key,ticket in Bill.tickets %}
+    <tr>
+      <td>{{ ticket.firstname }}</td>
+      <td>{{ ticket.lastname }}</td>
+      <td>{{ ticket.dateOfBirth | date('m/d/Y') }}</td>
+      <td>{{ ticket.reducedPrice }}</td>
+    </tr>      
+  {% endfor %}
+  </tbody>
+</table>
+  <div class="row">
+    <fieldset class="large-6 small-12 columns">
+      <a href="{{path('step2')}}" class="button expanded">Retour à l'étape précédente</a>
+    </fieldset>
+    <fieldset class="large-6 small-12 columns">
+      <button class="button expanded" type="submit" value="Submit">Confirmer la commande</button>
+    </fieldset>
+  </div>
+{% endblock %}

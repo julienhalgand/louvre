@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as BillAssert;
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Bill
  *
@@ -71,19 +71,17 @@ class Bill
     /**
      * @var int
      *
-     * @ORM\Column(name="number_of_tickets", type="integer")
-     * @Assert\NotBlank
-     * @Assert\GreaterThan(value = 0)
-     * @Assert\LessThanOrEqual(1000)
+     * @ORM\Column(name="order_id", type="integer", unique=true)
      */
-     private $numberOfTickets;
+    private $orderId;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="order_id", type="integer", unique=true)
+     * @ORM\Column(name="number_of_tickets", type="integer")
+     * @Assert\NotBlank
      */
-    private $orderId;
+    private $numberOfTickets;
 
     /**
      * @var int
@@ -92,6 +90,15 @@ class Bill
      */
     private $totalPrice;
 
+    /**
+    * @ORM\OneToMany(targetEntity="Ticket", mappedBy="bill")
+    */
+    private $tickets;
+
+    public function __construct()
+    {
+        $this->tickets = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -192,7 +199,7 @@ class Bill
     /**
      * Get dateOfBooking
      *
-     * @return \DateTime
+     * @return \String
      */
     public function getDateOfBooking()
     {
@@ -221,6 +228,29 @@ class Bill
     public function getTicketType()
     {
         return $this->ticketType;
+    }
+    /**
+     * Set tickets
+     *
+     * @param string $tickets
+     *
+     * @return Bill
+     */
+    public function setTickets($tickets)
+    {
+        $this->tickets = $tickets;
+
+        return $this;
+    }
+
+    /**
+     * Get tickets
+     *
+     * @return string
+     */
+    public function getTickets()
+    {
+        return $this->tickets;
     }
     /**
      * Set numberOfTickets
