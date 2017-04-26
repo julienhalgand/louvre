@@ -42,7 +42,10 @@ class Bill
      *
      * @ORM\Column(name="email", type="string", length=100)
      * @Assert\NotBlank
-     * @Assert\Email
+     * @Assert\Email(  
+     *  checkMX = true   
+     * )
+     
      */
     private $email;
 
