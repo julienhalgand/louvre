@@ -58,7 +58,8 @@ class Ticket
      * @ORM\Column(name="date_of_birth", type="datetime")
      * @Assert\NotBlank
      * @Assert\DateTime
-     * @TicketAssert\ValidDateOfBirth
+     * @Assert\LessThanOrEqual("today")
+     * @Assert\GreaterThan("today - 120 years")
      */
     private $dateOfBirth;
 
@@ -77,13 +78,14 @@ class Ticket
      * @var bool
      *
      * @ORM\Column(name="reduced_price", type="boolean")
+     * @TicketAssert\ValidReducedPrice
      */
     private $reducedPrice;
 
     /**
      * @var int
      * @ORM\ManyToOne(targetEntity="Bill", inversedBy="tickets")
-     * @ORM\JoinColumn(name="bill_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="bill_id", referencedColumnName="id", nullable=false)
      */
     private $bill;
 
@@ -272,6 +274,7 @@ class Ticket
     public function setReducedPrice($reducedPrice)
     {
         $this->reducedPrice = $reducedPrice;
+        //die(dump($this));
 
         return $this;
     }
@@ -332,6 +335,29 @@ class Ticket
     public function getPrice()
     {
         return $this->price;
+    }
+    /**
+     * Set bill
+     *
+     * @param integer $bill
+     *
+     * @return Ticket
+     */
+    public function setBill(Bill $bill)
+    {
+        $this->bill = $bill;
+
+        return $this;
+    }
+
+    /**
+     * Get bill
+     *
+     * @return int
+     */
+    public function getBill()
+    {
+        return $this->bill;
     }
     /**
      * Gets triggered only on insert

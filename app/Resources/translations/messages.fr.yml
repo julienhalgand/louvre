@@ -12,5 +12,8 @@ Number of tickets: Nombre de tickets
 base:
   title: Accueil
   lang: fr
-step1:
-  formError: Les champs en rouge sont invalides.
+form:
+  formError: Les champs en rouge sont invalides.  
+  billStep1:
+    allJourney: Toute la journée
+    halfJourney: Demi-journée

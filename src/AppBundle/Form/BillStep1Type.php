@@ -15,14 +15,15 @@ class BillStep1Type extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $arrayChoices = array(
+            'form.billStep1.allJourney' => 'allJourney',
+            'form.billStep1.halfJourney' => 'halfJourney'
+        );
         $builder
-            ->add('date_of_booking', TextType::class, array('attr' => array('placeholder' => 'dateOfBookingPlaceHolder'),'widget'=> 'single_text'))
+            ->add('date_of_booking', TextType::class, array('attr' => array('placeholder' => 'dateOfBookingPlaceHolder')))
             ->add('email', EmailType::class, array('attr' => array('placeholder' => 'example@example.example')))
             ->add('ticket_type', choiceType::class, array(
-                'choices' => array(
-                    'Journée' => 'allJourney',
-                    'Demi-journée' => 'halfJourney',
-                )   
+                'choices' => $arrayChoices 
             ))
             ->add('number_of_tickets', IntegerType::class, array('attr' => array('value' => 1)));
     }

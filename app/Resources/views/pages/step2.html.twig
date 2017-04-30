@@ -4,7 +4,7 @@
 <h2>Étape 2 sur 3</h2>
 {{ form_start(form, { 'method': 'POST', 'attr':{ 'novalidate': 'novalidate', 'data-abide': null, 'class': 'text-center'}}) }}
   <div data-abide-error class="alert callout" style="display: none;">
-    <p><i class="fi-alert"></i>{{'step1.formError'|trans}}</p>
+    <p><i class="fi-alert"></i>{{'form.formError'|trans}}</p>
   </div>
   {% if (form_errors(form)) %}
     <div class="alert callout">

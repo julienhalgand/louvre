@@ -4,6 +4,13 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    app.holidays:
+      class:     AppBundle\Service\FrenchHolidaysStringDateGenerator
+      arguments: 
+        []
+    app.bill_manager:
+        class: AppBundle\Manager\BillManager
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@form.factory'
+            - '@request_stack'

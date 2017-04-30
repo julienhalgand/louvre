@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class ValidDateOfBooking extends Constraint
+class ValidReducedPrice extends Constraint
 {
     public $message;
 

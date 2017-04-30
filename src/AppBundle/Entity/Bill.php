@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as BillAssert;
 use Doctrine\Common\Collections\ArrayCollection;
+use AppBundle\Entity\Ticket;
 /**
  * Bill
  *
@@ -55,7 +56,9 @@ class Bill
      * @ORM\Column(name="date_of_booking", type="datetime")
      * @Assert\NotBlank
      * @Assert\DateTime
-     * @BillAssert\ValidDateOfBooking
+     * @Assert\GreaterThanOrEqual("today")
+     * @Assert\LessThan("today +1 years")
+     * @BillAssert\ValidDateOfBooking(message="bill.dateOfBooking.validDateOfBooking")
      */
     private $dateOfBooking;
 
@@ -63,11 +66,12 @@ class Bill
      * @var string
      *
      * @ORM\Column(name="ticket_type", type="string", length=12)
+     * @Assert\NotBlank
      * @Assert\Choice(
      *  choices = {"allJourney", "halfJourney"},
      *  strict = true   
      * )
-     * @Assert\NotBlank
+     * @BillAssert\ValidTicketType(message="bill.ticketType.validTicketType")
      */
     private $ticketType;
 
@@ -94,7 +98,12 @@ class Bill
     private $totalPrice;
 
     /**
+    * @var ArrayCollection
     * @ORM\OneToMany(targetEntity="Ticket", mappedBy="bill")
+    * @Assert\All({
+    *   @Assert\Type(type="AppBundle\Entity\Ticket")
+    * })
+    * @Assert\Valid
     */
     private $tickets;
 
@@ -206,7 +215,7 @@ class Bill
      */
     public function getDateOfBooking()
     {
-        return $this->dateOfBooking;
+        return $this->dateOfBooking->format('d/m/Y');
     }
 
     /**
