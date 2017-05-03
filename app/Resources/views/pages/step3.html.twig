@@ -2,6 +2,7 @@
 {% block title %}Réservation étape 2{% endblock %}
 {% block body %}
 <h2>Étape 3 sur 3</h2>
+{#
 <table>
   <thead>
     <tr>
@@ -31,4 +32,27 @@
       <button class="button expanded" type="submit" value="Submit">Confirmer la commande</button>
     </fieldset>
   </div>
+  #}
+  {{ form_start(form, { 'method': 'DELETE', 'attr':{ 'novalidate': 'novalidate', 'data-abide': null, 'class': 'text-center'}}) }}
+  <div data-abide-error class="alert callout" style="display: none;">
+    <p><i class="fi-alert"></i>{{'form.formError'|trans}}</p>
+  </div>
+  {% if (form_errors(form)) %}
+    <div class="alert callout">
+        {{ form_errors(form) }}
+    </div>
+  {% endif %}
+{{ form_widget(form) }}
+  <div class="row">
+    <fieldset class="large-4 small-12 columns">
+      <a href="/" class="button expanded">Retour à la page d'accueil</a>
+    </fieldset>
+    <fieldset class="large-4 small-12 columns">
+      <button class="button expanded" type="reset" value="Reset">Reset</button>
+    </fieldset>
+    <fieldset class="large-4 small-12 columns">
+      <button class="button expanded" type="submit" value="Submit">Passer à l'étape suivante</button>
+    </fieldset>
+  </div>
+{{ form_end(form) }}
 {% endblock %}

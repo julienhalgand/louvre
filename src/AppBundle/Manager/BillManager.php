@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormFactory;
 use AppBundle\Form\BillStep1Type;
 use AppBundle\Form\BillStep2Type;
+use AppBundle\Form\BillStep3Type;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class BillManager{
@@ -81,6 +82,14 @@ class BillManager{
             }*/
             $request->getSession()->set('Bill', $bill);                           
         }
+        return $form;
+    }
+    public function renderFormDeleteTickets(){
+        $request = $this->request->getCurrentRequest();
+        
+        $bill = $this->billSessionManager->getBill();
+        $form = $this->form->create(BillStep3Type::class, $bill);
+        $form->handleRequest($request);
         return $form;
     }
     /**

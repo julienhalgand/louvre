@@ -7,6 +7,7 @@ use AppBundle\Manager\BillManager;
 use AppBundle\Entity\Ticket;
 use AppBundle\Form\BillStep1Type;
 use AppBundle\Form\BillStep2Type;
+use AppBundle\Form\BillStep3Type;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,8 +57,10 @@ class PagesController extends Controller
      */
     public function step3Action(Request $request)
     {
+        $form = $this->get('app.bill_manager')->renderFormDeleteTickets();
         $bill = $request->getSession()->get('Bill');
         return $this->render('pages/step3.html.twig', [
+            'form'      => $form->createView(),
             'Bill'  => $bill
         ]);
     }
