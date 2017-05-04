@@ -3,8 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Bill;
-use AppBundle\Manager\BillManager;
 use AppBundle\Entity\Ticket;
+use AppBundle\Service\BillService;
 use AppBundle\Form\BillStep1Type;
 use AppBundle\Form\BillStep2Type;
 use AppBundle\Form\BillStep3Type;
@@ -29,7 +29,7 @@ class PagesController extends Controller
      */
     public function step1Action(Request $request)
     {
-        $form =$this->get('app.bill_manager')->renderFormBill();
+        $form =$this->get('app.bill_service')->renderFormBill();
         if($form->isSubmitted() && $form->isValid()){
             return $this->redirectToRoute('step2'); 
         }
@@ -43,7 +43,7 @@ class PagesController extends Controller
      */
     public function step2Action(Request $request)
     {
-        $form = $this->get('app.bill_manager')->renderFormTickets();
+        $form = $this->get('app.bill_service')->renderFormTickets();
         if($form->isSubmitted() && $form->isValid()){
             //die(dump($form));
             return $this->redirectToRoute('step3');
@@ -57,7 +57,7 @@ class PagesController extends Controller
      */
     public function step3Action(Request $request)
     {
-        $form = $this->get('app.bill_manager')->renderFormDeleteTickets();
+        $form = $this->get('app.bill_service')->renderFormDeleteTickets();
         $bill = $request->getSession()->get('Bill');
         return $this->render('pages/step3.html.twig', [
             'form'      => $form->createView(),

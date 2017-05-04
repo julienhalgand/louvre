@@ -13,4 +13,7 @@ class ValidDateOfBooking extends Constraint
     public function __construct(){
         $this->message = "This value is not valid.";
     }
+    public function validateBy(){
+        return "app.date_of_booking_validator";
+    }
 }

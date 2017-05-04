@@ -24,7 +24,7 @@ class BillStep1Type extends AbstractType
             ->add('ticket_type', choiceType::class, array(
                 'choices' => $arrayChoices 
             ))
-            ->add('number_of_tickets', IntegerType::class, array('attr' => array('value' => 1)));
+            ->add('number_of_tickets', IntegerType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

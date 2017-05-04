@@ -1,19 +1,18 @@
 <?php
 
-namespace AppBundle\Manager;
+namespace AppBundle\Service;
 
 use AppBundle\Entity\Bill;
-use AppBundle\Manager\TicketManager;
+use AppBundle\Service\TicketService;
+use Symfony\Component\HttpFoundation\RequestStack;
 
-class TicketsSessionManager{
-    private $session;
+class TicketSessionService{
     private $tickets;
 
     public function __construct(
         RequestStack $request
     ){
-        $this->session = $request->getSession();
-        $this->tickets = $this->session->get('Bill')->getTickets();
+        $this->request = $request;
     }
     /**
     * Test si des Ticket existent en session dans l'objet Bill

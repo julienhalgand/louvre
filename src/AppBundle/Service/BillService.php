@@ -1,38 +1,34 @@
 <?php
 
-namespace AppBundle\Manager;
+namespace AppBundle\Service;
 
 use AppBundle\Entity\Bill;
-use AppBundle\Manager\BillSessionManager;
 use AppBundle\Entity\Ticket;
-use AppBundle\Manager\TicketManager;
-use AppBundle\Manager\TicketSessionManager;
-use Doctrine\ORM\EntityManager;
+use AppBundle\Service\BillSessionService;
+use AppBundle\Service\TicketService;
+use AppBundle\Service\TicketSessionService;
 use Symfony\Component\Form\FormFactory;
 use AppBundle\Form\BillStep1Type;
 use AppBundle\Form\BillStep2Type;
 use AppBundle\Form\BillStep3Type;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class BillManager{
-    private $doctrine;
+class BillService{
     private $form;
     private $request;
-    private $billSessionManager;
-    private $ticketManager;
+    private $billSessionService;
+    private $ticketService;
 
     public function __construct(
-        EntityManager $doctrine,
         FormFactory $form,
         RequestStack $request,
-        BillSessionManager $billSessionManager,
-        TicketManager $ticketManager
+        BillSessionService $billSessionService,
+        TicketService $ticketService
     ){
-        $this->doctrine = $doctrine;
         $this->form = $form;
         $this->request = $request;
-        $this->billSessionManager = $billSessionManager;
-        $this->ticketManager = $ticketManager;
+        $this->billSessionService = $billSessionService;
+        $this->ticketService = $ticketService;
     }
     /**
     * Crée un nouvel objet Bill
@@ -47,10 +43,10 @@ class BillManager{
     public function renderFormBill(){
         $request = $this->request->getCurrentRequest();
         $bill = new Bill();
-        if($this->billSessionManager->isBillInSession()){
-            $bill = $this->billSessionManager->getBill();            
+        if($this->billSessionService->isBillInSession()){
+            $bill = $this->billSessionService->getBill();            
         }else{
-            $this->billSessionManager->saveInSession($bill);
+            $this->billSessionService->saveInSession($bill);
         }
         $form = $this->form->create(BillStep1Type::class, $bill);
         $form->handleRequest($request);
@@ -67,15 +63,15 @@ class BillManager{
     public function renderFormTickets(){
         $request = $this->request->getCurrentRequest();
         //Test si objet ticket existe en session
-        if($this->billSessionManager->isBillInSession()){
+        if($this->billSessionService->isBillInSession()){
             $request->getSession()->getFlashBag()->add(
                 'warning','aieu'
                 //$this->get('translator')->trans('step1NotValid')
             );
             //return $this->redirectToRoute('step1'); 
         }
-        $bill = $this->billSessionManager->getBill();
-        $this->ticketManager->ticketsRegulator($bill);//Régule le nombre de ticket en session
+        $bill = $this->billSessionService->getBill();
+        $this->ticketService->ticketsRegulator($bill);//Régule le nombre de ticket en session
         $form = $this->form->create(BillStep2Type::class, $bill);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -90,7 +86,7 @@ class BillManager{
     public function renderFormDeleteTickets(){
         $request = $this->request->getCurrentRequest();
         
-        $bill = $this->billSessionManager->getBill();
+        $bill = $this->billSessionService->getBill();
         $form = $this->form->create(BillStep3Type::class, $bill);
         $form->handleRequest($request);
         return $form;
@@ -101,12 +97,12 @@ class BillManager{
     */
     public function addTickets(Bill $bill, $numberOfTickets = null){
         if($numberOfTickets = null){
-            $bill->getTickets()->add($ticketManager->newTicket());
+            $bill->getTickets()->add($ticketService->newTicket());
             return $bill;
         }
         for($i=0; $i<$bill->getNumberOfTickets();$i++){
             if(count($bill->getTickets()) < $bill->getNumberOfTickets()){
-                $bill->getTickets()->add($ticketManager->newTicket());              
+                $bill->getTickets()->add($ticketService->newTicket());              
             }
         }
         return $bill; 

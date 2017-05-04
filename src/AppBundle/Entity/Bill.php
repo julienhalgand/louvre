@@ -88,7 +88,7 @@ class Bill
      * @ORM\Column(name="number_of_tickets", type="integer")
      * @Assert\NotBlank
      */
-    private $numberOfTickets;
+    private $numberOfTickets = 1;
 
     /**
      * @var int
@@ -110,6 +110,7 @@ class Bill
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
+        $this->dateOfBooking = new \DateTime();
     }
 
     /**

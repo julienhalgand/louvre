@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Manager;
+namespace AppBundle\Service;
 
 use AppBundle\Entity\Ticket;
 use AppBundle\Entity\Bill;
 use Doctrine\ORM\EntityManager;
 
-use AppBundle\Manager\TicketSessionManager;
+use AppBundle\Service\TicketSessionService;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class TicketManager{
+class TicketService{
     private $doctrine;
     private $request;
 

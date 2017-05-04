@@ -8,9 +8,31 @@ services:
       class:     AppBundle\Service\FrenchHolidaysStringDateGenerator
       arguments: 
         []
-    app.bill_manager:
-        class: AppBundle\Manager\BillManager
+    app.bill_service:
+        class: AppBundle\Service\BillService
         arguments:
-            - '@doctrine.orm.default_entity_manager'
             - '@form.factory'
             - '@request_stack'
+            - '@app.bill_session_service'
+            - '@app.ticket_service'
+    app.ticket_service:
+        class: AppBundle\Service\TicketService
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@request_stack'
+            - '@app.ticket_session_service'
+    app.bill_session_service:
+        class: AppBundle\Service\BillSessionService
+        arguments:
+            - '@request_stack'
+            - '@serializer'
+    app.ticket_session_service:
+        class: AppBundle\Service\TicketSessionService
+        arguments:
+            - '@request_stack'
+    app.date_of_booking_validator:
+        class: AppBundle\Validator\Constraints\ValidDateOfBookingValidator
+        tags:
+            - { name: validator.constraint_validator }
+        arguments:
+            - '@app.holidays'
