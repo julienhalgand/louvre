@@ -7,6 +7,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as BillAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Entity\Ticket;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 /**
  * Bill
  *
@@ -104,6 +106,7 @@ class Bill
     *   @Assert\Type(type="AppBundle\Entity\Ticket")
     * })
     * @Assert\Valid
+    * @MaxDepth(2)
     */
     private $tickets;
 
@@ -251,6 +254,16 @@ class Bill
      */
     public function setTickets($tickets)
     {
+        //Si array créer un arraycollection de tickets
+        if(is_array($tickets)){
+            $this->tickets = new ArrayCollection();            
+            foreach($tickets as $ticket){
+                $newTicket = new Ticket();
+                $newTicket->setFirstname($ticket['firstname']);
+                $this->tickets->add($newTicket);
+            }
+            return $this;
+        }
         $this->tickets = $tickets;
 
         return $this;
@@ -259,7 +272,7 @@ class Bill
     /**
      * Get tickets
      *
-     * @return string
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getTickets()
     {

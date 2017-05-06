@@ -4,7 +4,7 @@ parameters:
 #    parameter_name: value
 
 services:
-    app.holidays:
+    app.holidays_service:
       class:     AppBundle\Service\FrenchHolidaysStringDateGenerator
       arguments: 
         []
@@ -25,14 +25,20 @@ services:
         class: AppBundle\Service\BillSessionService
         arguments:
             - '@request_stack'
-            - '@serializer'
     app.ticket_session_service:
         class: AppBundle\Service\TicketSessionService
         arguments:
             - '@request_stack'
+    app.page_service:
+        class: AppBundle\Service\PageService
+        arguments:
+            - '@request_stack'
+            - '@app.bill_service'
+            - '@twig'
+            - '@app.holidays_service'
     app.date_of_booking_validator:
         class: AppBundle\Validator\Constraints\ValidDateOfBookingValidator
         tags:
             - { name: validator.constraint_validator }
         arguments:
-            - '@app.holidays'
+            - '@app.holidays_service'

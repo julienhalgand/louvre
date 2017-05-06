@@ -2,21 +2,18 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Bill;
 use AppBundle\Entity\Ticket;
-use AppBundle\Service\BillService;
-use AppBundle\Form\BillStep1Type;
-use AppBundle\Form\BillStep2Type;
-use AppBundle\Form\BillStep3Type;
+use AppBundle\Service\PageService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class PagesController extends Controller
 {
     /**
      * @Route("/", name="homepage")
+     * @Method({"GET","HEAD"})
      */
     public function homepageAction(Request $request)
     {
@@ -26,34 +23,23 @@ class PagesController extends Controller
     }
     /**
      * @Route("/step1", name="step1")
+     * @Method({"GET","HEAD"})
      */
     public function step1Action(Request $request)
     {
-        $form =$this->get('app.bill_service')->renderFormBill();
-        if($form->isSubmitted() && $form->isValid()){
-            return $this->redirectToRoute('step2'); 
-        }
-        return $this->render('pages/step1.html.twig', [
-            'form'      => $form->createView(),
-            'holidays'  => $this->container->get('app.holidays')->getHolidaysArrayString()
-        ]);
+        return $this->get('app.page_service')->renderView('step1');
     }
     /**
      * @Route("/step2", name="step2")
+     * @Method({"GET","HEAD"})
      */
     public function step2Action(Request $request)
     {
-        $form = $this->get('app.bill_service')->renderFormTickets();
-        if($form->isSubmitted() && $form->isValid()){
-            //die(dump($form));
-            return $this->redirectToRoute('step3');
-        }
-        return $this->render('pages/step2.html.twig', [
-            'form'      => $form->createView(),
-        ]);
+        return $this->get('app.page_service')->renderView('step2');
     }
     /**
      * @Route("/step3", name="step3")
+     * @Method({"GET","HEAD"})
      */
     public function step3Action(Request $request)
     {
@@ -66,6 +52,7 @@ class PagesController extends Controller
     }
     /**
      * @Route("/thankyou", name="thankyou")
+     * @Method({"GET","HEAD"})
      */
     public function thankyouAction(Request $request)
     {

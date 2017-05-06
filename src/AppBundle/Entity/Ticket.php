@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as TicketAssert;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 /**
  * Ticket
  *
@@ -86,6 +87,7 @@ class Ticket
      * @var int
      * @ORM\ManyToOne(targetEntity="Bill", inversedBy="tickets")
      * @ORM\JoinColumn(name="bill_id", referencedColumnName="id", nullable=false)
+     * @MaxDepth(2)
      */
     private $bill;
 
@@ -287,30 +289,6 @@ class Ticket
     public function getReducedPrice()
     {
         return $this->reducedPrice;
-    }
-
-    /**
-     * Set orderId
-     *
-     * @param integer $orderId
-     *
-     * @return Ticket
-     */
-    public function setOrderId($orderId)
-    {
-        $this->orderId = $orderId;
-
-        return $this;
-    }
-
-    /**
-     * Get orderId
-     *
-     * @return int
-     */
-    public function getOrderId()
-    {
-        return $this->orderId;
     }
 
     /**

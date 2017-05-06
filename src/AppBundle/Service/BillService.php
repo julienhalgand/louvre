@@ -34,26 +34,21 @@ class BillService{
     * Crée un nouvel objet Bill
     */
     public function newBill(){
-        return new Bill();;
+        return new Bill();
     }
     /**
-    * Rends le formulaire de Bill
+    * Rends le formulaire de Bill step1
     * @return FormFactory
     */
     public function renderFormBill(){
         $request = $this->request->getCurrentRequest();
-        $bill = new Bill();
+        $bill = $this->newBill();
         if($this->billSessionService->isBillInSession()){
             $bill = $this->billSessionService->getBill();            
         }else{
             $this->billSessionService->saveInSession($bill);
         }
         $form = $this->form->create(BillStep1Type::class, $bill);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $billSerialized = 
-            $request->getSession()->set('Bill', $bill);                           
-        }
         return $form;
     }
     /**
@@ -62,30 +57,13 @@ class BillService{
     */
     public function renderFormTickets(){
         $request = $this->request->getCurrentRequest();
-        //Test si objet ticket existe en session
-        if($this->billSessionService->isBillInSession()){
-            $request->getSession()->getFlashBag()->add(
-                'warning','aieu'
-                //$this->get('translator')->trans('step1NotValid')
-            );
-            //return $this->redirectToRoute('step1'); 
-        }
         $bill = $this->billSessionService->getBill();
-        $this->ticketService->ticketsRegulator($bill);//Régule le nombre de ticket en session
+        $this->ticketService->ticketsRegulator($bill); //Régule le nombre de ticket en session      
         $form = $this->form->create(BillStep2Type::class, $bill);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            //die(dump($bill));
-            /*foreach($tickets as $ticket){
-                $ticketPrice = $ticket->getTicketPrice($bill->getTicketType());
-                $ticket->setPrice($ticketPrice);
-            }*/                         
-        }
         return $form;
     }
     public function renderFormDeleteTickets(){
-        $request = $this->request->getCurrentRequest();
-        
+        $request = $this->request->getCurrentRequest();       
         $bill = $this->billSessionService->getBill();
         $form = $this->form->create(BillStep3Type::class, $bill);
         $form->handleRequest($request);
