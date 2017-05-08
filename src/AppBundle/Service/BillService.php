@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormFactory;
 use AppBundle\Form\BillStep1Type;
 use AppBundle\Form\BillStep2Type;
 use AppBundle\Form\BillStep3Type;
+use AppBundle\Form\TicketStep3Type;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class BillService{
@@ -57,17 +58,34 @@ class BillService{
     */
     public function renderFormTickets(){
         $request = $this->request->getCurrentRequest();
+        $clonedSessionBill = clone $this->billSessionService->getBill();
+        $this->ticketService->ticketsRegulator($clonedSessionBill); //Régule le nombre de ticket en session
+        $form = $this->form->create(BillStep2Type::class, $clonedSessionBill);
+        return $form;
+    }
+    public function renderFormDeleteTicketsView(){
+        $request = $this->request->getCurrentRequest();       
         $bill = $this->billSessionService->getBill();
-        $this->ticketService->ticketsRegulator($bill); //Régule le nombre de ticket en session      
-        $form = $this->form->create(BillStep2Type::class, $bill);
+        $formsArray = [];
+        foreach($bill->getTickets() as $ticket){
+            $formsArray[] = $this->form->create(TicketStep3Type::class, $ticket)->createView();
+        }
+        return $formsArray;
+    }
+    public function renderFormConfirmCommand(){
+        $request = $this->request->getCurrentRequest();       
+        $bill = $this->billSessionService->getBill();
+        $form = $this->form->create(BillStep3Type::class, $bill);
         return $form;
     }
     public function renderFormDeleteTickets(){
         $request = $this->request->getCurrentRequest();       
         $bill = $this->billSessionService->getBill();
-        $form = $this->form->create(BillStep3Type::class, $bill);
-        $form->handleRequest($request);
-        return $form;
+        $formsArray = [];
+        foreach($bill->getTickets() as $ticket){
+            $formsArray[] = $this->form->create(TicketStep3Type::class, $ticket);
+        }
+        return $formsArray;
     }
     /**
     * Ajoute un Ticket à Bill
@@ -86,11 +104,23 @@ class BillService{
         return $bill; 
     }
     /**
+    * Supprime un Ticket à Bill
+    * @return Bill
+    */
+    public function deleteTicket(Bill $bill, Int $key){
+        $tickets = $bill->getTickets();
+        $tickets->remove($key);
+        $bill->setNumberOfTickets($bill->getNumberOfTickets()-1);
+        return $bill; 
+    }
+    /**
     * Compte les tickets dans bill
     * @return int
     */
     public function countTickets(Bill $bill){
-       return $bill->getNumberOfTickets();
+        $tickets = $bill->getTickets();
+        
+        return count($tickets);;
     }
 
 }

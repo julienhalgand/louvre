@@ -21,31 +21,6 @@ class BillSessionService{
         $this->serializer = new Serializer($this->normalizer, array(new JsonEncoder()));
     }
     /**
-    * Serialize Bill
-    * @return json
-    */
-    private function serializeBill(Bill $bill){        
-        return $this->serializer->serialize($bill, 'json');
-    }
-    /**
-    * deserialize Bill
-    * @return Bill
-    */
-    private function deSerializeBill($serializedBill){
-        return $this->serializer->deserialize($serializedBill,Bill::class,'json');
-    }
-    /**
-    * normalize Bill
-    */
-    private function normalizeBill(Bill $bill){
-        $normalizer = new ObjectNormalizer();
-        $normalizedBill = $this->serializer->normalize(
-            $bill,
-            Bill::class
-        );
-        return $bill;
-    }
-    /**
     * Test si Bill existe en session
     * @return bool
     */
@@ -60,8 +35,7 @@ class BillSessionService{
     */
     public function getBill(){
         if($this->isBillInSession()){
-            $bill = $this->deSerializeBill($this->getCurrentSession()->get('Bill'));
-            return $bill;
+            return $this->getCurrentSession()->get('Bill');
         }
         die("Pas de Bill en session");
     }
@@ -77,9 +51,7 @@ class BillSessionService{
     * @return Session
     */
     public function saveInSession(Bill $bill){
-        $serializedBill = $this->serializeBill($bill);
-        //die(dump($serializedBill, $bill));
-        return $this->getCurrentSession()->set('Bill', $serializedBill);
+        return $this->getCurrentSession()->set('Bill', clone $bill);
     }
     /**
     * Get current session

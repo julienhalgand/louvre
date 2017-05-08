@@ -45,17 +45,36 @@ class BillController extends Controller
         return $this->redirectToRoute('step2');
     }
     /**
-     * @Route("/bill/deleteticket", name="bill_deleteticket")
+     * @Route("/bill/deleteticket/{id}", name="bill_deleteticket")
+     * @Method({"DELETE"})     
+     */
+    public function deleteTicket(Request $request, Int $id)
+    {
+        $billService = $this->get('app.bill_service');
+        $formArray = $billService->renderFormDeleteTickets();
+        if(array_key_exists($id, $formArray)){
+            $formArray[$id]->handleRequest($request);
+            $bill = $this->get('app.bill_session_service')->getBill();
+            if($billService->countTickets($bill) > 1){
+                $billService->deleteTicket($bill, $id);
+                $this->get('app.bill_session_service')->saveInSession($bill);
+            }
+            return $this->redirectToRoute('step3');          
+        }
+        return new \notFoundException('Ticket not found.');
+    }
+    /**
+     * @Route("/bill/comfirm", name="command_confirmation")
      * @Method({"POST"})     
      */
-    public function deleteTicket(Request $request)
+    public function comfirmCommand(Request $request)
     {
-        $form = $this->get('app.bill_service')->renderFormDeleteTickets();
-        $bill = $request->getSession()->get('Bill');
-        return $this->render('pages/step3.html.twig', [
-            'form'      => $form->createView(),
-            'Bill'  => $bill
-        ]);
+        $form = $this->get('app.bill_service')->renderFormConfirmCommand();
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            die(dump($form));
+        }        
+        return $this->redirectToRoute('step3'); 
     }
     /**
      * @Route("/thankyou", name="thankyou")

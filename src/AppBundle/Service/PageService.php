@@ -28,7 +28,7 @@ class PageService{
         if(is_callable(array($this, $nameOfView))){
             return $this->$nameOfView();
         }else{
-            return $this->createNotFoundException('This view doesn\'t exist.' );
+            return $this->createNotFoundException('This view doesn\'t exist.');
         }
     }
     private function step1(){
@@ -41,7 +41,7 @@ class PageService{
     private function step2(){
         $form = $this->billService->renderFormTickets();
         return new Response( $this->twig->render('pages/step2.html.twig', [
-            'form'      => $form->createView(),
+            'form'      => $form->createView()
         ]));
     }
     private function step3(){

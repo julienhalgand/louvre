@@ -42,3 +42,9 @@ services:
             - { name: validator.constraint_validator }
         arguments:
             - '@app.holidays_service'
+    app.reduced_price_validator:
+        class: AppBundle\Validator\Constraints\ValidReducedPriceValidator
+        tags:
+            - { name: validator.constraint_validator }
+        arguments:
+            - '@app.ticket_service'

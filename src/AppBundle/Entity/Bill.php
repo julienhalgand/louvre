@@ -88,6 +88,8 @@ class Bill
      * @var int
      *
      * @ORM\Column(name="number_of_tickets", type="integer")
+     * @Assert\GreaterThanOrEqual(1)
+     * @Assert\LessThanOrEqual(1000)
      * @Assert\NotBlank
      */
     private $numberOfTickets = 1;
@@ -106,7 +108,6 @@ class Bill
     *   @Assert\Type(type="AppBundle\Entity\Ticket")
     * })
     * @Assert\Valid
-    * @MaxDepth(2)
     */
     private $tickets;
 
@@ -115,7 +116,9 @@ class Bill
         $this->tickets = new ArrayCollection();
         $this->dateOfBooking = new \DateTime();
     }
-
+    function __clone() {
+        $this->tickets = clone $this->tickets;
+    }
     /**
      * Get id
      *

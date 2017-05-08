@@ -17,3 +17,6 @@ form:
   billStep1:
     allJourney: Toute la journée
     halfJourney: Demi-journée
+step3:
+  delete: Supprimer un billet
+  deleteConfirmation: Êtes-vous sur de vouloir supprimer ce billet ?

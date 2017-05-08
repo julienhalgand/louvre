@@ -54,7 +54,6 @@ class TicketService{
                 }
             }
         }
-        //die(dump($bill));
         return $bill;
     }
 }

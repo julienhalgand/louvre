@@ -43,11 +43,13 @@ class PagesController extends Controller
      */
     public function step3Action(Request $request)
     {
-        $form = $this->get('app.bill_service')->renderFormDeleteTickets();
+        $form = $this->get('app.bill_service')->renderFormConfirmCommand()->createView();
+        $formsArray = $this->get('app.bill_service')->renderFormDeleteTicketsView();
         $bill = $request->getSession()->get('Bill');
         return $this->render('pages/step3.html.twig', [
-            'form'      => $form->createView(),
-            'Bill'  => $bill
+            'form'          => $form,
+            'formsArray'    => $formsArray,
+            'Bill'          => $bill
         ]);
     }
     /**

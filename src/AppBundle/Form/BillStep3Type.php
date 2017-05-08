@@ -15,10 +15,7 @@ class BillStep3Type extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('tickets', CollectionType::class, array(
-                'entry_type'          => TicketStep3Type::class
-            ));
+        $builder;
     }
 
     public function configureOptions(OptionsResolver $resolver)
