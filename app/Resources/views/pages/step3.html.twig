@@ -19,8 +19,9 @@
       <td>{{ ticket.firstname }}</td>
       <td>{{ ticket.lastname }}</td>
       <td>{{ ticket.dateOfBirth | date('m/d/Y') }}</td>
-      <td>{{ ticket.price }}</td>
       <td>{{ ticket.reducedPrice }}</td>
+      <td>{{ ticket.price }}</td>
+      
       <td>
       {%set onsubmit = "return confirm(\"#{'step3.deleteConfirmation'|trans}\");"%}
         {{ form_start(formsArray[key], {'action': path('bill_deleteticket', {'id': key}), 'method': 'DELETE', 'attr':{'onsubmit':onsubmit}}) }}      
@@ -34,7 +35,7 @@
 
   {% for key,form in formsArray %}
   {% endfor %}
-  {{ form_start(form, {'action': path('command_confirmation'), 'method': 'POST'}) }}  
+  {{ form_start(form,{'method': 'POST'}) }}  
     {{ form_widget(form) }}    
   <div class="row">
     <fieldset class="large-6 small-12 columns">

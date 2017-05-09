@@ -2,17 +2,18 @@
 
 namespace AppBundle\Service;
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\RequestStack;
 use AppBundle\Entity\Bill;
 use AppBundle\Entity\Ticket;
 use AppBundle\Service\BillSessionService;
 use AppBundle\Service\TicketService;
-use AppBundle\Service\TicketSessionService;
-use Symfony\Component\Form\FormFactory;
 use AppBundle\Form\BillStep1Type;
 use AppBundle\Form\BillStep2Type;
 use AppBundle\Form\BillStep3Type;
 use AppBundle\Form\TicketStep3Type;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class BillService{
     private $form;
@@ -34,64 +35,74 @@ class BillService{
     /**
     * Crée un nouvel objet Bill
     */
-    public function newBill(){
+    private function newBill(){
         return new Bill();
     }
     /**
-    * Rends le formulaire de Bill step1
-    * @return FormFactory
+    * Rends un formulaire
     */
-    public function renderFormBill(){
-        $request = $this->request->getCurrentRequest();
+    public function renderForm(String $nameOfForm){
+        if(is_callable(array($this, $nameOfForm))){
+            return $this->$nameOfForm();
+        }else{
+            return $this->createNotFoundException('This view doesn\'t exist.');
+        }
+    }
+    private function createBillIfNotInSession(){
         $bill = $this->newBill();
         if($this->billSessionService->isBillInSession()){
             $bill = $this->billSessionService->getBill();            
         }else{
             $this->billSessionService->saveInSession($bill);
         }
+        return $bill;
+    }
+    /**
+    * Rends le formulaire de Bill step1
+    * @return FormFactory
+    */
+    private function billStep1(){
+        $request = $this->request->getCurrentRequest();
+        $bill = $this->createBillIfNotInSession();
         $form = $this->form->create(BillStep1Type::class, $bill);
+        $form->handleRequest($request);
         return $form;
     }
     /**
     * Rends le formulaire de Tickets
     * @return FormFactory
     */
-    public function renderFormTickets(){
+    private function billStep2(){
         $request = $this->request->getCurrentRequest();
-        $clonedSessionBill = clone $this->billSessionService->getBill();
-        $this->ticketService->ticketsRegulator($clonedSessionBill); //Régule le nombre de ticket en session
-        $form = $this->form->create(BillStep2Type::class, $clonedSessionBill);
+        $bill = $this->billSessionService->getBill();
+        $this->ticketService->ticketsRegulator($bill); //Régule le nombre de ticket en session
+        $form = $this->form->create(BillStep2Type::class, $bill);
+        $form->handleRequest($request);        
         return $form;
     }
-    public function renderFormDeleteTicketsView(){
+    private function ticketsStep3(){
         $request = $this->request->getCurrentRequest();       
         $bill = $this->billSessionService->getBill();
         $formsArray = [];
         foreach($bill->getTickets() as $ticket){
-            $formsArray[] = $this->form->create(TicketStep3Type::class, $ticket)->createView();
+            $form = $this->form->create(TicketStep3Type::class, $ticket);
+            $form->handleRequest($request);
+            $formsArray[] = $form->createView();
         }
         return $formsArray;
     }
-    public function renderFormConfirmCommand(){
+    private function billStep3(){
         $request = $this->request->getCurrentRequest();       
         $bill = $this->billSessionService->getBill();
         $form = $this->form->create(BillStep3Type::class, $bill);
+        $form->handleRequest($request);        
         return $form;
-    }
-    public function renderFormDeleteTickets(){
-        $request = $this->request->getCurrentRequest();       
-        $bill = $this->billSessionService->getBill();
-        $formsArray = [];
-        foreach($bill->getTickets() as $ticket){
-            $formsArray[] = $this->form->create(TicketStep3Type::class, $ticket);
-        }
-        return $formsArray;
     }
     /**
     * Ajoute un Ticket à Bill
     * @return Bill
     */
-    public function addTickets(Bill $bill, $numberOfTickets = null){
+    private function addTickets(Bill $bill, $numberOfTickets = null){
         if($numberOfTickets = null){
             $bill->getTickets()->add($ticketService->newTicket());
             return $bill;
@@ -107,7 +118,8 @@ class BillService{
     * Supprime un Ticket à Bill
     * @return Bill
     */
-    public function deleteTicket(Bill $bill, Int $key){
+    private function deleteTicket(Int $key){
+        $bill = $this->billSessionService->getBill();        
         $tickets = $bill->getTickets();
         $tickets->remove($key);
         $bill->setNumberOfTickets($bill->getNumberOfTickets()-1);
@@ -117,7 +129,7 @@ class BillService{
     * Compte les tickets dans bill
     * @return int
     */
-    public function countTickets(Bill $bill){
+    private function countTickets(Bill $bill){
         $tickets = $bill->getTickets();
         
         return count($tickets);;

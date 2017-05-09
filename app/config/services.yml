@@ -33,8 +33,10 @@ services:
         class: AppBundle\Service\PageService
         arguments:
             - '@request_stack'
-            - '@app.bill_service'
             - '@twig'
+            - '@app.redirect_service'            
+            - '@app.bill_service'
+            - '@app.bill_session_service'
             - '@app.holidays_service'
     app.date_of_booking_validator:
         class: AppBundle\Validator\Constraints\ValidDateOfBookingValidator
@@ -48,3 +50,7 @@ services:
             - { name: validator.constraint_validator }
         arguments:
             - '@app.ticket_service'
+    app.redirect_service:
+        class: AppBundle\Service\RedirectService
+        arguments:
+            - '@router'

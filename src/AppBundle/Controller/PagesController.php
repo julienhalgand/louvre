@@ -23,32 +23,53 @@ class PagesController extends Controller
     }
     /**
      * @Route("/step1", name="step1")
-     * @Method({"GET","HEAD"})
+     * @Method({"GET","HEAD","POST"})
      */
-    public function step1Action(Request $request)
-    {
+    public function step1Action(Request $request){
         return $this->get('app.page_service')->renderView('step1');
     }
     /**
      * @Route("/step2", name="step2")
-     * @Method({"GET","HEAD"})
+     * @Method({"GET","HEAD","POST"})
      */
-    public function step2Action(Request $request)
-    {
+    public function step2Action(Request $request){
         return $this->get('app.page_service')->renderView('step2');
     }
     /**
      * @Route("/step3", name="step3")
-     * @Method({"GET","HEAD"})
+     * @Method({"GET","HEAD","POST","DELETE"})
      */
-    public function step3Action(Request $request)
+    public function step3Action(Request $request){
+        return $this->get('app.page_service')->renderView('step3');
+    }
+    /**
+     * @Route("/bill/deleteticket/{id}", name="bill_deleteticket")
+     * @Method({"DELETE"})     
+     */
+    public function deleteTicket(Request $request, Int $id)
     {
-        $form = $this->get('app.bill_service')->renderFormConfirmCommand()->createView();
-        $formsArray = $this->get('app.bill_service')->renderFormDeleteTicketsView();
-        $bill = $request->getSession()->get('Bill');
-        return $this->render('pages/step3.html.twig', [
+        $billService = $this->get('app.bill_service');
+        $formArray = $billService->renderFormDeleteTickets();
+        if(array_key_exists($id, $formArray)){
+            $formArray[$id]->handleRequest($request);
+            $bill = $this->get('app.bill_session_service')->getBill();
+            if($billService->countTickets($bill) > 1){
+                $billService->deleteTicket($bill, $id);
+                $this->get('app.bill_session_service')->saveInSession($bill);
+            }
+            return $this->redirectToRoute('step3');          
+        }
+        return new \notFoundException('Ticket not found.');
+    }
+    /**
+     * @Route("/payment", name="payment")
+     * @Method({"GET","HEAD","POST"})
+     */
+    public function stripeAction(Request $request)
+    {
+        $form = $this->get('app.bill_service')->renderFormPayment()->createView();
+        return $this->render('pages/stripe.html.twig', [
             'form'          => $form,
-            'formsArray'    => $formsArray,
             'Bill'          => $bill
         ]);
     }

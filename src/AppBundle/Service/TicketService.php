@@ -30,7 +30,7 @@ class TicketService{
     /**
     * Calcul et renvoi l'age
     */
-    public function getAge(Ticket $ticket){
+    private function getAge(Ticket $ticket){
         return intval(strftime('%Y')) - intval($ticket->getDateOfBirthObject()->format('Y'));
     }
     /**
@@ -55,5 +55,55 @@ class TicketService{
             }
         }
         return $bill;
+    }
+    /**
+    * Calcul et set les prix des billets
+    * @return Bill
+    */
+    public function setPrices(Bill $bill){
+        $tickets = $bill->getTickets();
+        foreach($tickets as $ticket){
+            //Calcul des prix
+            $normalPrice            = 16;
+            $senoirPrice            = 12;
+            $childPrice             = 8;
+            $reducedPriceDividedBy  = 2;
+            //calcul de l'age
+            $age            = $this->getAge();
+
+            $ticketPrice    = 16;
+            if($age > 60){
+                $ticketPrice = 12;
+            }elseif($age < 12 && $age > 4){
+                $ticketPrice = 8;
+            }elseif($age < 4){
+                $ticketPrice = 0;
+            }
+            if($ticket->getReducedPrice() && $age > 12 && $age < 60){
+                $ticketPrice = 10;
+            }else{
+                $ticket->setReducedPrice(false);
+            }
+            if($bill->getTicketType() == "halfJourney" && $ticketPrice != 0){
+                $ticketPrice /= 2;
+            }
+            $ticket->setPrice($ticketPrice);
+        }
+        return $bill;
+    }
+    public function deleteTicket(Request $request, Int $id)
+    {
+        $billService = $this->get('app.bill_service');
+        $formArray = $billService->renderFormDeleteTickets();
+        if(array_key_exists($id, $formArray)){
+            $formArray[$id]->handleRequest($request);
+            $bill = $this->get('app.bill_session_service')->getBill();
+            if($billService->countTickets($bill) > 1){
+                $billService->deleteTicket($bill, $id);
+                $this->get('app.bill_session_service')->saveInSession($bill);
+            }
+            return $this->redirectToRoute('step3');          
+        }
+        return new \notFoundException('Ticket not found.');
     }
 }

@@ -353,33 +353,5 @@ class Ticket
     {
         $this->setUpdatedAt(new \DateTime("now"));
     }
-
-    public function getTicketPrice($ticketType){
-        //Calcul des prix
-        $normalPrice            = 16;
-        $senoirPrice            = 12;
-        $childPrice             = 8;
-        $reducedPriceDividedBy  = 2;
-        //calcul de l'age
-        $age            = intval(strftime('%Y')) - intval($this->dateOfBirth->format('Y'));
-
-        $ticketPrice    = 16;
-        if($age > 60){
-            $ticketPrice = 12;
-        }elseif($age < 12 && $age > 4){
-            $ticketPrice = 8;
-        }elseif($age < 4){
-            $ticketPrice = 0;
-        }
-        if($this->reducedPrice && $age > 12 && $age < 60){
-            $ticketPrice = 10;
-        }else{
-            $this->reducedPrice = false;
-        }
-        if($ticketType == "halfJourney" && $ticketPrice != 0){
-            $ticketPrice /= 2;
-        }
-        return $ticketPrice;
-    }
 }
 
