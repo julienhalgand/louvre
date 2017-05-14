@@ -20,13 +20,8 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@request_stack'
-            - '@app.ticket_session_service'
     app.bill_session_service:
         class: AppBundle\Service\BillSessionService
-        arguments:
-            - '@request_stack'
-    app.ticket_session_service:
-        class: AppBundle\Service\TicketSessionService
         arguments:
             - '@request_stack'
     app.page_service:
@@ -54,3 +49,9 @@ services:
         class: AppBundle\Service\RedirectService
         arguments:
             - '@router'
+    app.exception_listener:
+        class: AppBundle\Listener\BillNotFoundExceptionListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+        arguments:
+            - '@app.redirect_service'

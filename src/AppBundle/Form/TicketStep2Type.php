@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class TicketStep2Type extends AbstractType
@@ -18,6 +19,8 @@ class TicketStep2Type extends AbstractType
             ->add('firstname', TextType::class, array('attr' => array('placeholder' => 'firstnamePlaceHolder')))
             ->add('lastname', TextType::class, array('attr' => array('placeholder' => 'lastnamePlaceHolder')))
             ->add('date_of_birth', TextType::class, array('attr' => array('placeholder' => 'dateOfBirthPlaceHolder')))
+            ->add('country_code', CountryType::class, array('data' => 'FR'))
+          /*
             ->add('country_code', ChoiceType::class, array(
                 'choices' => array(
                     "Afghanistan " => "AF",
@@ -269,6 +272,7 @@ class TicketStep2Type extends AbstractType
                 ),
                 'data' => 'FR'   
             ))
+            */
             ->add('reduced_price', CheckboxType::class, array(
                 'label'        => 'Tarif réduit',
                 'value'         => true,
@@ -280,6 +284,9 @@ class TicketStep2Type extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Ticket::class,
+            'error_mapping' => array(
+                '.' => 'country_code',
+            )
         ));
     }
 }

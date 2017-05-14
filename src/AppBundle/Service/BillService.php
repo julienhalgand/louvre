@@ -10,6 +10,7 @@ use AppBundle\Entity\Bill;
 use AppBundle\Entity\Ticket;
 use AppBundle\Service\BillSessionService;
 use AppBundle\Service\TicketService;
+use AppBundle\Service\TicketSessionService;
 use AppBundle\Form\BillStep1Type;
 use AppBundle\Form\BillStep2Type;
 use AppBundle\Form\BillStep3Type;
@@ -26,6 +27,7 @@ class BillService{
         RequestStack $request,
         BillSessionService $billSessionService,
         TicketService $ticketService
+
     ){
         $this->form = $form;
         $this->request = $request;
@@ -50,7 +52,7 @@ class BillService{
     }
     private function createBillIfNotInSession(){
         $bill = $this->newBill();
-        if($this->billSessionService->isBillInSession()){
+        if($this->billSessionService->testIfBillInSession()){
             $bill = $this->billSessionService->getBill();            
         }else{
             $this->billSessionService->saveInSession($bill);
@@ -81,10 +83,12 @@ class BillService{
         return $form;
     }
     private function ticketsStep3(){
-        $request = $this->request->getCurrentRequest();       
+        $request = $this->request->getCurrentRequest();
         $bill = $this->billSessionService->getBill();
+        $tickets = $bill->getTickets();
+        $this->ticketService->isTickets($tickets);        
         $formsArray = [];
-        foreach($bill->getTickets() as $ticket){
+        foreach($tickets as $ticket){
             $form = $this->form->create(TicketStep3Type::class, $ticket);
             $form->handleRequest($request);
             $formsArray[] = $form->createView();
@@ -92,7 +96,7 @@ class BillService{
         return $formsArray;
     }
     private function billStep3(){
-        $request = $this->request->getCurrentRequest();       
+        $request = $this->request->getCurrentRequest();
         $bill = $this->billSessionService->getBill();
         $form = $this->form->create(BillStep3Type::class, $bill);
         $form->handleRequest($request);        

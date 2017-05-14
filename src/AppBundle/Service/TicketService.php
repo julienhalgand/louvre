@@ -2,11 +2,11 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Entity\Ticket;
 use AppBundle\Entity\Bill;
-use Doctrine\ORM\EntityManager;
+use AppBundle\Entity\Ticket;
 
-use AppBundle\Service\TicketSessionService;
+use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -27,10 +27,37 @@ class TicketService{
     public function newTicket(){
         return new Ticket();
     }
+        /**
+    * Test si des Ticket existent en session dans l'objet Bill
+    * @return bool
+    */
+    public function testIfTickets(ArrayCollection $tickets){
+        if(count($tickets) > 0){
+            return true;
+        }
+        return false;
+    }
+    /**
+    * Test si des Ticket existent en session dans l'objet Bill
+    * @return TicketsNotFoundException
+    */
+    public function isTickets(ArrayCollection $tickets){
+        if(count($tickets) === 0){
+            throw new TicketsNotFoundException();
+        }
+    }
+    /**
+    * Compte le nombre de Tickets dans la session
+    * @return int
+    */
+    public function getNumberOfTickets(ArrayCollection $tickets){
+        $this->isTicketsInSession();
+        return count($bill->getNumberOfTickets());
+    }
     /**
     * Calcul et renvoi l'age
     */
-    private function getAge(Ticket $ticket){
+    public function getAge(Ticket $ticket){
         return intval(strftime('%Y')) - intval($ticket->getDateOfBirthObject()->format('Y'));
     }
     /**
@@ -63,29 +90,23 @@ class TicketService{
     public function setPrices(Bill $bill){
         $tickets = $bill->getTickets();
         foreach($tickets as $ticket){
-            //Calcul des prix
-            $normalPrice            = 16;
-            $senoirPrice            = 12;
-            $childPrice             = 8;
-            $reducedPriceDividedBy  = 2;
             //calcul de l'age
             $age            = $this->getAge();
-
-            $ticketPrice    = 16;
-            if($age > 60){
-                $ticketPrice = 12;
-            }elseif($age < 12 && $age > 4){
-                $ticketPrice = 8;
-            }elseif($age < 4){
-                $ticketPrice = 0;
+            $ticketPrice    = Ticket::PRICE_NORMAL;
+            if($age > Ticket::AGE_SENIOR){
+                $ticketPrice = Ticket::PRICE_SENIOR;
+            }elseif($age < Ticket::AGE_CHILD && $age > Ticket::AGE_YOUNG_CHILD){
+                $ticketPrice = Ticket::PRICE_CHILD;
+            }elseif($age < Ticket::AGE_YOUNG_CHILD){
+                $ticketPrice = Ticket::PRICE_YOUNG_CHILD;
             }
-            if($ticket->getReducedPrice() && $age > 12 && $age < 60){
-                $ticketPrice = 10;
+            if($ticket->getReducedPrice() && $age > Ticket::AGE_CHILD){
+                $ticketPrice = Ticket::PRICE_REDUCED;
             }else{
                 $ticket->setReducedPrice(false);
             }
-            if($bill->getTicketType() == "halfJourney" && $ticketPrice != 0){
-                $ticketPrice /= 2;
+            if($bill->getTicketType() == Bill::TYPE_HALF_JOURNEY && $ticketPrice != Ticket::PRICE_YOUNG_CHILD){
+                $ticketPrice /= Ticket::PRICE_REDUCED_DIVIDED_BY;
             }
             $ticket->setPrice($ticketPrice);
         }

@@ -3,6 +3,7 @@ namespace AppBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use AppBundle\Entity\Bill;
 
 class ValidTicketTypeValidator extends ConstraintValidator
 {
@@ -19,8 +20,7 @@ class ValidTicketTypeValidator extends ConstraintValidator
         $dateNowHour = $dateNow->format('H');
         $dateNow->setTimeZone(new \DateTimeZone('UTC'));        
         $dateNow->setTime(0,0,0);
-        //die(dump($dateNow,$dateOfBooking));
-        if($dateOfBooking == $dateNow && $dateNowHour >= 14 && $value == "allJourney"){
+        if($dateOfBooking == $dateNow && $dateNowHour >= Bill::HOUR_APPLY_HALF_JOURNEY_AFTER && $value == Bill::TYPE_ALL_JOURNEY){
             $this->context->buildViolation($constraint->message)
             ->addViolation();
         }

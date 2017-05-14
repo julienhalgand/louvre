@@ -17,6 +17,14 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
  */
 class Bill
 {
+    const TYPE_ALL_JOURNEY = "allJourney";
+    const TYPE_HALF_JOURNEY = "halfJourney";
+    const TYPE_TICKET_TYPE_ARRAY = [
+        'form.billStep1.allJourney'   => self::TYPE_ALL_JOURNEY,
+        'form.billStep1.halfJourney'   => self::TYPE_HALF_JOURNEY
+    ];
+    const HOUR_APPLY_HALF_JOURNEY_AFTER = 14;
+
     /**
      * @var int
      *
@@ -70,7 +78,7 @@ class Bill
      * @ORM\Column(name="ticket_type", type="string", length=12)
      * @Assert\NotBlank
      * @Assert\Choice(
-     *  choices = {"allJourney", "halfJourney"},
+     *  choices = {Bill::TYPE_ALL_JOURNEY, Bill::TYPE_HALF_JOURNEY},
      *  strict = true   
      * )
      * @BillAssert\ValidTicketType(message="bill.ticketType.validTicketType")

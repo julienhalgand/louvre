@@ -13,6 +13,17 @@ use AppBundle\Validator\Constraints as TicketAssert;
  */
 class Ticket
 {
+    //Constantes de prix du Ticket
+    const PRICE_NORMAL      = 16;
+    const PRICE_SENIOR      = 12;
+    const PRICE_REDUCED     = 10;
+    const PRICE_CHILD = 8;
+    const PRICE_YOUNG_CHILD = 0;
+    const PRICE_REDUCED_DIVIDED_BY = 2;
+    const AGE_SENIOR = 60;
+    const AGE_CHILD = 12;
+    const AGE_YOUNG_CHILD = 4;
+
     /**
      * @var int
      *

@@ -65,6 +65,9 @@ class PageService{
         $form = $this->billService->renderForm('billStep3');
         $formsArray = $this->billService->renderForm('ticketsStep3');
         if($form->isSubmitted() && $form->isValid()){
+            if($this->request->getCurrentRequest()->getMethod() == "DELETE"){
+
+            }
             $this->billSessionService->saveInSession($form->getData());
             return $this->redirectService->redirectToRoute('payment');
         }
