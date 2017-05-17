@@ -20,23 +20,22 @@
       <td>{{ ticket.lastname }}</td>
       <td>{{ ticket.dateOfBirth | date('m/d/Y') }}</td>
       <td>{{ ticket.reducedPrice }}</td>
-      <td>{{ ticket.price }}</td>
+      <td>{{ ticket.price }} €</td>
       
       <td>
+  {% endfor %}
+  {% for key,ticketForm in formsArray %}
       {%set onsubmit = "return confirm(\"#{'step3.deleteConfirmation'|trans}\");"%}
-        {{ form_start(formsArray[key], {'action': path('bill_deleteticket', {'id': key}), 'method': 'DELETE', 'attr':{'onsubmit':onsubmit}}) }}      
-        {{ form_widget(formsArray[key]) }}
-        {{ form_end(formsArray[key]) }}
+        {{ form_start(ticketForm, {'action': path('bill_deleteticket', {'id': key}), 'method': 'DELETE', 'attr':{'onsubmit':onsubmit}}) }}      
+        {{ form_widget(ticketForm) }}
+        {{ form_end(ticketForm) }}
       </td>
     </tr>
   {% endfor %}
   </tbody>
 </table>
-
-  {% for key,form in formsArray %}
-  {% endfor %}
   {{ form_start(form,{'method': 'POST'}) }}  
-    {{ form_widget(form) }}    
+  {{ form_widget(form) }}    
   <div class="row">
     <fieldset class="large-6 small-12 columns">
       <a href="{{path('step2')}}" class="button expanded">Retour à l'étape précédente</a>

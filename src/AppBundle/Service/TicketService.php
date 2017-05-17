@@ -58,7 +58,8 @@ class TicketService{
     * Calcul et renvoi l'age
     */
     public function getAge(Ticket $ticket){
-        return intval(strftime('%Y')) - intval($ticket->getDateOfBirthObject()->format('Y'));
+        $dateDifference = date_diff(new \DateTime(),$ticket->getDateOfBirthObject());
+        return $dateDifference->format('Y');
     }
     /**
     * Régule le nombre de ticket en session en fonction du nombre désiré par l'utilisateur
@@ -91,7 +92,7 @@ class TicketService{
         $tickets = $bill->getTickets();
         foreach($tickets as $ticket){
             //calcul de l'age
-            $age            = $this->getAge();
+            $age            = $this->getAge($ticket);
             $ticketPrice    = Ticket::PRICE_NORMAL;
             if($age > Ticket::AGE_SENIOR){
                 $ticketPrice = Ticket::PRICE_SENIOR;

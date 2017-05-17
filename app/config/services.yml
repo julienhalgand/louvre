@@ -32,7 +32,13 @@ services:
             - '@app.redirect_service'            
             - '@app.bill_service'
             - '@app.bill_session_service'
+            - '@app.ticket_service'
             - '@app.holidays_service'
+            - '@app.stripe_service'
+    app.stripe_service:
+        class: AppBundle\Service\StripeService
+        arguments:
+            - '%app.stripe%'
     app.date_of_booking_validator:
         class: AppBundle\Validator\Constraints\ValidDateOfBookingValidator
         tags:

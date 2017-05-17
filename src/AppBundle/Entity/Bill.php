@@ -111,7 +111,7 @@ class Bill
 
     /**
     * @var ArrayCollection
-    * @ORM\OneToMany(targetEntity="Ticket", mappedBy="bill")
+    * @ORM\OneToMany(targetEntity="Ticket", mappedBy="bill", orphanRemoval=true)
     * @Assert\All({
     *   @Assert\Type(type="AppBundle\Entity\Ticket")
     * })
@@ -359,7 +359,11 @@ class Bill
     {
         return $this->totalPrice;
     }
-
+    public function removeTicket(Int $key){
+        $this->tickets->remove($key);
+        $this->setNumberOfTickets($this->getNumberOfTickets()-1);
+        return $this;
+    }
     /**
      * Gets triggered only on insert
 

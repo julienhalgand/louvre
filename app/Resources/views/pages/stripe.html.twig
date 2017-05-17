@@ -2,12 +2,100 @@
 {% block title %}Réservation étape 3{% endblock %}
 {% block body %}
 <h2>Étape 3 sur 3</h2>
-{{ form_start(form, {'action': path('bill_deleteticket', {'id': key}), 'method': 'DELETE', 'attr':{'onsubmit':onsubmit}}) }}      
+{#<form action="{{path('payment')}}" id="stripeForm" method="POST">
+  <div class="row">
+    <div class="large-6 columns">
+    <label for="">{{ 'stripe.creditCardNumber'|trans }}</label>
+      <input type="text" placeholder="{{ 'stripe.creditCardNumber'|trans }}" data-stripe="number" value="4242 4242 4242 4242">
+    </div>
+    <div class="large-3 columns">
+    <label for="">{{ 'stripe.expirationMonth'|trans }}</label>    
+      <select data-stripe="exp-month">
+      {% for m in 1..12 %}
+        <option value="0{{m}}">{{m}}</option>
+      {% endfor %}
+      </select>
+    </div>
+    <div class="large-3 columns">
+    <label for="">{{ 'stripe.expirationYear'|trans }}</label>    
+      <select data-stripe="exp-year">
+      {% set currentYear = 'now'|date("Y") %}
+      {% set maxYear = currentYear + 6 %}
+      {% for y in currentYear..maxYear %}
+        <option value={{y}} selected>{{y}}</option>
+      {% endfor %}
+      </select>
+    </div>
+    <div class="large-3 columns">
+      <label for="">{{ 'stripe.cvc'|trans }}</label>
+      <input type="text" placeholder="{{ 'stripe.cvc'|trans }}" data-stripe="cvc" value="123">
+    </div>
+  </div>
+  <div class="row">
+    <fieldset class="large-6 small-12 columns">
+      <a href="{{path('step3')}}" class="button expanded">Retour à l'étape précédente</a>
+    </fieldset>
+    <fieldset class="large-6 small-12 columns">
+      <button class="button expanded" type="submit" value="Submit" id="submitForm">Confirmer le paiement</button>
+    </fieldset>
+  </div>
+</form>
+#}
+{{ form_start(form, {'method': 'POST', 'attr':{ 'novalidate': 'novalidate', 'data-abide': null, 'class': 'text-center', 'id': 'stripeForm'}}) }}
+  <div data-abide-error class="alert callout" style="display: none;">
+    <p><i class="fi-alert"></i>{{'form.formError'|trans}}</p>
+  </div>
+  {% if (form_errors(form)) %}
+    <div class="alert callout">
+        {{ form_errors(form) }}
+    </div>
+  {% endif %}
 {{ form_widget(form) }}
+  <div class="row">
+    <fieldset class="large-6 small-12 columns">
+      <a href="{{path('step3')}}" class="button expanded">Retour à l'étape précédente</a>
+    </fieldset>
+    <fieldset class="large-6 small-12 columns">
+      <button class="button expanded" type="submit" value="Submit" id="submitForm">Confirmer le paiement</button>
+    </fieldset>
+  </div>
 {{ form_end(form) }}
 {% endblock %}
-<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-<script>
-    Stripe.setPublishableKey(pk_test_vf58lIDGzCQTeenFAoqgtm97);
-    var $form = $('');
-</script>
+
+
+{% block javascripts %}
+  {% javascripts  'js/vendor/jquery.js'
+                  'js/vendor/motionui.js'
+                  'js/vendor/whatinput.js'
+                  'js/vendor/modernizr.js'
+                  'js/vendor/foundation.js'
+                  'js/vendor/fdatepicker.js'
+                  'js/vendor/fdatepickerlocales/foundation-datepicker.fr.js'
+                  'js/vendor/fdatepickerlocales/foundation-datepicker.es.js'
+                  'js/*'
+                  output='js/app.js' %}
+      <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+  <script>
+  //4242 4242 4242 4242
+      Stripe.setPublishableKey("{{ stripeApiKey }}");
+      var $form = $('#stripeForm');
+      $form.submit(function(e){
+          e.preventDefault();
+          $form.find('#submitForm').attr('disabled', true);
+          Stripe.card.createToken($form, function(status, response){
+            if(response.error){
+              $form.find('.callout').remove();
+              $form.prepend('<div class="callout alert">' + response.error.message+'</div>');
+              $form.find('#submitForm').attr('disabled', false);
+            }else{
+              var token = response.id;
+              $('#credit_card_payment_stripe_token').val(token)
+              debugger
+              $form.get(0).submit();
+            }
+          });
+      });
+  </script>
+{% endblock %}

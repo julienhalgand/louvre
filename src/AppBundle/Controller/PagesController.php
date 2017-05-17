@@ -49,12 +49,12 @@ class PagesController extends Controller
     public function deleteTicket(Request $request, Int $id)
     {
         $billService = $this->get('app.bill_service');
-        $formArray = $billService->renderFormDeleteTickets();
+        $formArray = $billService->renderForm('ticketsStep3Form');
         if(array_key_exists($id, $formArray)){
-            $formArray[$id]->handleRequest($request);
             $bill = $this->get('app.bill_session_service')->getBill();
             if($billService->countTickets($bill) > 1){
-                $billService->deleteTicket($bill, $id);
+                $ticket = $formArray[$id]->getData();
+                $bill->removeTicket($id);
                 $this->get('app.bill_session_service')->saveInSession($bill);
             }
             return $this->redirectToRoute('step3');          
@@ -67,11 +67,7 @@ class PagesController extends Controller
      */
     public function stripeAction(Request $request)
     {
-        $form = $this->get('app.bill_service')->renderFormPayment()->createView();
-        return $this->render('pages/stripe.html.twig', [
-            'form'          => $form,
-            'Bill'          => $bill
-        ]);
+        return $this->get('app.page_service')->renderView('stripe');
     }
     /**
      * @Route("/thankyou", name="thankyou")
