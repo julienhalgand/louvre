@@ -16,16 +16,13 @@ class CreditCardPaymentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $currentYear = intval(date("Y"));
-        $yearsAvalable[$currentYear] =  $currentYear;
-        $yearsAvalable[$currentYear+1] =  $currentYear+1;
-        $yearsAvalable[$currentYear+2] =  $currentYear+2;
-        $yearsAvalable[$currentYear+3] =  $currentYear+3;
-        $yearsAvalable[$currentYear+4] =  $currentYear+4;
-        $yearsAvalable[$currentYear+5] =  $currentYear+5;
-        $yearsAvalable[$currentYear+6] =  $currentYear+6;
+        $yearsAvalable = array();
+        for($i = intval(date("Y")); $i < ($currentYear+6); $i++){
+            $yearsAvalable[$i] = $i;
+        }
             
         $builder
-            ->add('card_number', IntegerType::class, array('attr' => array(
+            ->add('card_number', TextType::class, array('attr' => array(
                 'placeholder' => 'stripe.placeholder.card_number',
                 'data-stripe' => 'number'
             )))

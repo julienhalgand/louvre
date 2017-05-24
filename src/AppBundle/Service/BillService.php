@@ -2,15 +2,9 @@
 
 namespace AppBundle\Service;
 
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormFactory;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RequestStack;
 use AppBundle\Entity\Bill;
-use AppBundle\Entity\Ticket;
-use AppBundle\Entity\CreditCard;
-use AppBundle\Service\BillSessionService;
-use AppBundle\Service\TicketService;
 use AppBundle\Service\TicketSessionService;
 use AppBundle\Form\BillStep1Type;
 use AppBundle\Form\BillStep2Type;
@@ -118,35 +112,9 @@ class BillService{
     }
     private function stripeForm(){
         $request = $this->request->getCurrentRequest();
+         $this->billSessionService->getBill();
         $form = $this->form->create(CreditCardPaymentType::class);
         $form->handleRequest($request);        
         return $form;
     }
-
-    /**
-    * Ajoute un Ticket à Bill
-    * @return Bill
-    */
-    private function addTickets(Bill $bill, $numberOfTickets = null){
-        if($numberOfTickets = null){
-            $bill->getTickets()->add($ticketService->newTicket());
-            return $bill;
-        }
-        for($i=0; $i<$bill->getNumberOfTickets();$i++){
-            if(count($bill->getTickets()) < $bill->getNumberOfTickets()){
-                $bill->getTickets()->add($ticketService->newTicket());              
-            }
-        }
-        return $bill; 
-    }
-    /**
-    * Compte les tickets dans bill
-    * @return int
-    */
-    public function countTickets(Bill $bill){
-        $tickets = $bill->getTickets();
-        
-        return count($tickets);;
-    }
-
 }

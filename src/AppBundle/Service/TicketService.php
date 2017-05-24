@@ -31,7 +31,7 @@ class TicketService{
     * Test si des Ticket existent en session dans l'objet Bill
     * @return bool
     */
-    public function testIfTickets(ArrayCollection $tickets){
+    public function testIfTickets($tickets){
         if(count($tickets) > 0){
             return true;
         }
@@ -41,7 +41,7 @@ class TicketService{
     * Test si des Ticket existent en session dans l'objet Bill
     * @return TicketsNotFoundException
     */
-    public function isTickets(ArrayCollection $tickets){
+    public function isTickets($tickets){
         if(count($tickets) === 0){
             throw new TicketsNotFoundException();
         }
@@ -50,7 +50,7 @@ class TicketService{
     * Compte le nombre de Tickets dans la session
     * @return int
     */
-    public function getNumberOfTickets(ArrayCollection $tickets){
+    public function getNumberOfTickets($tickets){
         $this->isTicketsInSession();
         return count($bill->getNumberOfTickets());
     }
@@ -91,18 +91,22 @@ class TicketService{
     public function setPrices(Bill $bill){
         $tickets = $bill->getTickets();
         foreach($tickets as $ticket){
-            //calcul de l'age
             $age            = $this->getAge($ticket);
             $ticketPrice    = Ticket::PRICE_NORMAL;
+            $priceType      = Ticket::PRICE_TYPE_NORMAL;
             if($age > Ticket::AGE_SENIOR){
                 $ticketPrice = Ticket::PRICE_SENIOR;
+                $priceType      = Ticket::PRICE_TYPE_SENIOR;
             }elseif($age < Ticket::AGE_CHILD && $age > Ticket::AGE_YOUNG_CHILD){
                 $ticketPrice = Ticket::PRICE_CHILD;
+                $priceType      = Ticket::PRICE_TYPE_CHILD;
             }elseif($age < Ticket::AGE_YOUNG_CHILD){
                 $ticketPrice = Ticket::PRICE_YOUNG_CHILD;
+                $priceType      = Ticket::PRICE_TYPE_YOUNG_CHILD;
             }
             if($ticket->getReducedPrice() && $age > Ticket::AGE_CHILD){
                 $ticketPrice = Ticket::PRICE_REDUCED;
+                $priceType      = Ticket::PRICE_TYPE_REDUCED;
             }else{
                 $ticket->setReducedPrice(false);
             }
@@ -110,6 +114,8 @@ class TicketService{
                 $ticketPrice /= Ticket::PRICE_REDUCED_DIVIDED_BY;
             }
             $ticket->setPrice($ticketPrice);
+            $ticket->setPriceType($priceType);
+            $bill->setTotalPrice($bill->getTotalPrice()+$ticketPrice);
         }
         return $bill;
     }

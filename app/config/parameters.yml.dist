@@ -18,10 +18,11 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
     app.stripe:
-        api_key: pk_test_vf58lIDGzCQTeenFAoqgtm97
+        api_key: ~
+        api_key_private: ~
     app.email:
-        send_by: tracker688@gmail.com
-        received_by: tracker688@gmail.com
-        client_id: 997874586801-dnf3mp95p3k7v9ubn0ek4h03jg86o817.apps.googleusercontent.com
-        client_secret: 5gH6gu4ykudnH1V48V62ahBu
-        refresh_token: 1/JSWceIGGxUHkEc21n92Z9QXuzggSBThcPCcAW0u7n4AMEudVrK5jSpoR30zcRFq6
+        send_by: ~
+        received_by: ~
+        client_id: ~
+        client_secret: ~
+        refresh_token: ~

@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PagesController extends Controller
 {
@@ -48,18 +49,8 @@ class PagesController extends Controller
      */
     public function deleteTicket(Request $request, Int $id)
     {
-        $billService = $this->get('app.bill_service');
-        $formArray = $billService->renderForm('ticketsStep3Form');
-        if(array_key_exists($id, $formArray)){
-            $bill = $this->get('app.bill_session_service')->getBill();
-            if($billService->countTickets($bill) > 1){
-                $ticket = $formArray[$id]->getData();
-                $bill->removeTicket($id);
-                $this->get('app.bill_session_service')->saveInSession($bill);
-            }
-            return $this->redirectToRoute('step3');          
-        }
-        return new \notFoundException('Ticket not found.');
+        return $this->get('app.page_service')->deleteTicket();
+
     }
     /**
      * @Route("/payment", name="payment")

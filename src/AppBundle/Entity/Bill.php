@@ -7,13 +7,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as BillAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Entity\Ticket;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
 /**
  * Bill
  *
  * @ORM\Table(name="bill")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\BillRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Bill
 {
@@ -40,13 +39,6 @@ class Bill
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    private $updatedAt;
 
     /**
      * @var string
@@ -79,7 +71,7 @@ class Bill
      * @Assert\NotBlank
      * @Assert\Choice(
      *  choices = {Bill::TYPE_ALL_JOURNEY, Bill::TYPE_HALF_JOURNEY},
-     *  strict = true   
+     *  strict = true
      * )
      * @BillAssert\ValidTicketType(message="bill.ticketType.validTicketType")
      */
@@ -88,9 +80,9 @@ class Bill
     /**
      * @var int
      *
-     * @ORM\Column(name="order_id", type="integer", unique=true)
+     * @ORM\Column(name="stripe_id", type="string")
      */
-    private $orderId;
+    private $stripeId;
 
     /**
      * @var int
@@ -111,7 +103,7 @@ class Bill
 
     /**
     * @var ArrayCollection
-    * @ORM\OneToMany(targetEntity="Ticket", mappedBy="bill", orphanRemoval=true)
+    * @ORM\OneToMany(targetEntity="Ticket", mappedBy="bill", orphanRemoval=true, cascade="persist")
     * @Assert\All({
     *   @Assert\Type(type="AppBundle\Entity\Ticket")
     * })
@@ -159,30 +151,6 @@ class Bill
     public function getCreatedAt()
     {
         return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return Bill
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**
@@ -312,28 +280,29 @@ class Bill
     {
         return $this->numberOfTickets;
     }
-    /**
-     * Set orderId
-     *
-     * @param integer $orderId
-     *
-     * @return Bill
-     */
-    public function setOrderId($orderId)
-    {
-        $this->orderId = $orderId;
-
-        return $this;
-    }
 
     /**
-     * Get orderId
+     * Get stripeId
      *
      * @return int
      */
-    public function getOrderId()
+    public function getStripeId()
     {
-        return $this->orderId;
+        return $this->stripeId;
+    }
+
+    /**
+     * Set stripeId
+     *
+     * @param int $stripeId
+     *
+     * @return Bill
+     */
+    public function setStripeId($stripeId)
+    {
+        $this->stripeId = $stripeId;
+
+        return $this;
     }
 
     /**
@@ -359,7 +328,7 @@ class Bill
     {
         return $this->totalPrice;
     }
-    public function removeTicket(Int $key){
+    public function removeTicket($key){
         $this->tickets->remove($key);
         $this->setNumberOfTickets($this->getNumberOfTickets()-1);
         return $this;
@@ -372,17 +341,26 @@ class Bill
     public function onPrePersist()
     {
         $this->setCreatedAt(new \DateTime("now"));
-        //À voir pour unique
-        $this->setOrderId(random_int(1, 10));
+    }
+
+    /**
+     * Add ticket
+     *
+     * @param \AppBundle\Entity\Ticket $ticket
+     *
+     * @return Bill
+     */
+    public function addTicket(\AppBundle\Entity\Ticket $ticket)
+    {
+        $this->tickets[] = $ticket;
+
+        return $this;
     }
     /**
-     * Gets triggered every time on update
-
-     * @ORM\PreUpdate
+     * Compte les tickets dans bill
+     * @return int
      */
-    public function onPreUpdate()
-    {
-        $this->setUpdatedAt(new \DateTime("now"));
+    public function countTickets(){
+        return count($this->tickets);
     }
 }
-

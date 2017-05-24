@@ -1,6 +1,6 @@
-homepageTitle: Accueil
-step1Title: Réservation étape 1
-schedulesPrices: Horaires et tarifs
+home:
+  title: Accueil
+  schedulesPrices: Horaires et tarifs
 Date of booking: Jour de votre visite
 dateOfBookingPlaceHolder: 01/01/2000
 Email: Votre adresse email
@@ -9,6 +9,26 @@ Journée: Journée
 Demi-journée: Demi-journée
 Ticket type: Type de ticket
 Number of tickets: Nombre de tickets
+Delete: Supprimer
+
+Firstname: Prénom
+Lastname: Nom
+Date of birth: Date de naissance
+Country code: Pays de résidence
+
+ticket: Billet
+
+young_child: Jeune enfant
+child: Enfant
+normal: Normal
+reduced: Réduit
+senior: Sénior
+
+Card number: Numéro de carte bleu
+Expiration month: Mois d'expiration
+Expiration year: Année d'expiration
+Security code: Code de sécurité
+
 base:
   title: Accueil
   lang: fr
@@ -17,6 +37,34 @@ form:
   billStep1:
     allJourney: Toute la journée
     halfJourney: Demi-journée
+step1:
+  title: Réservation étape 1
+  stepNumber: Étape 1 sur 3
+step2:
+  title: Réservation étape 2
+  stepNumber: Étape 2 sur 3
+  firstnamePlaceHolder: Prénom
+  lastnamePlaceHolder: Nom de famille
+  dateOfBirthPlaceHolder: Date de naissance
+  reducedPrice: Je bénéficie d'un tarif réduit
 step3:
-  delete: Supprimer un billet
+  title: Réservation étape 3
+  stepNumber: Étape 3 sur 3
+  firstname: Prénom
+  lastname: Nom
+  dateOfBirth: Date de naissance
+  reducedPrice: Tarif
+  price: Prix du billet
+  deleteTicket: Supprimer un billet
+  delete: Supprimer un ticket
   deleteConfirmation: Êtes-vous sur de vouloir supprimer ce billet ?
+  totalPrice: Total TTC
+  oneTicketAtLeast: Vous devez avoir au moins un ticket dans votre commande
+stripe:
+  title: Paiement
+  placeholder:
+    card_number: Numéro de votre carte de bleu
+    expiration_date: Date d'expiration
+    security_code: Code de sécurité
+thankyou:
+  title: Merci pour votre commande

@@ -39,7 +39,14 @@
     </ul>
   </div>
 </div>
-        {% block body %}{% endblock %}
+    {% for type, flash_messages in app.session.flashBag.all %}
+        {% for flash_message in flash_messages %}
+            <div class="callout {{ type }}">
+                {{ flash_message|trans }}.
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% block body %}{% endblock %}
     {% block javascripts %}
         {% javascripts  'js/vendor/jquery.js'
                         'js/vendor/motionui.js'
@@ -65,7 +72,8 @@
         </div>   
         <div class="large-8 medium-8 small-12 columns text-center">
             <p>© Musée du Louvre - Tous droits de reproduction réservés</p>
-            <p>Contactez-nous - CGV -Aide/FAQ</p>
+            <p><a href="https://www.ticketlouvre.fr/louvre/b2c/index.cfm/contacts">Contactez-nous</a> - <a href="https://www.ticketlouvre.fr/louvre/b2c/index.cfm/CGV">CGV</a> -
+                <a href="https://www.ticketlouvre.fr/louvre/b2c/index.cfm/FAQ">Aide/FAQ</a></p>
         </div>
         <div class="large-2 medium-2 small-12 columns text-center">       
             <p><a href="#" id="scrollTop" class="button expanded">↑ Haut de page ↑</a></p>

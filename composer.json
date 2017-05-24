@@ -30,7 +30,10 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "symfony/assetic-bundle": "^2.8",
         "symfony/var-dumper": "^3.2",
-        "symfony/serializer": "^3.2"
+        "symfony/serializer": "^3.2",
+        "stripe/stripe-php": "^4.9",
+        "phpmailer/phpmailer": "^5.2",
+        "league/oauth2-google": "^2.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

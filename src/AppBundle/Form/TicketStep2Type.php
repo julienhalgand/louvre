@@ -16,12 +16,12 @@ class TicketStep2Type extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstname', TextType::class, array('attr' => array('placeholder' => 'firstnamePlaceHolder')))
-            ->add('lastname', TextType::class, array('attr' => array('placeholder' => 'lastnamePlaceHolder')))
-            ->add('date_of_birth', TextType::class, array('attr' => array('placeholder' => 'dateOfBirthPlaceHolder')))
+            ->add('firstname', TextType::class, array('attr' => array('placeholder' => 'step2.firstnamePlaceHolder')))
+            ->add('lastname', TextType::class, array('attr' => array('placeholder' => 'step2.lastnamePlaceHolder')))
+            ->add('date_of_birth', TextType::class, array('attr' => array('placeholder' => 'step2.dateOfBirthPlaceHolder')))
             ->add('country_code', CountryType::class, array('data' => 'FR'))
             ->add('reduced_price', CheckboxType::class, array(
-                'label'        => 'Tarif réduit',
+                'label'        => 'step2.reducedPrice',
                 'value'         => true,
                 'required'     => false
             ));

@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
-{% block title %}Réservation étape 1{% endblock %}
+{% block title %}{{ 'step1.title'|trans }}{% endblock %}
 {% block body %}
-<h2>Étape 1 sur 3</h2>
+<h2>{{ 'step1.stepNumber'|trans }}</h2>
 {{ form_start(form, {'method': 'POST', 'attr':{ 'novalidate': 'novalidate', 'data-abide': null, 'class': 'text-center'}}) }}
   <div data-abide-error class="alert callout" style="display: none;">
     <p><i class="fi-alert"></i>{{'form.formError'|trans}}</p>

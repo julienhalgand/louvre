@@ -29,16 +29,23 @@ services:
         arguments:
             - '@request_stack'
             - '@twig'
-            - '@app.redirect_service'            
+            - '@app.redirect_service'
             - '@app.bill_service'
             - '@app.bill_session_service'
             - '@app.ticket_service'
             - '@app.holidays_service'
             - '@app.stripe_service'
+            - '@app.email_service'
+            - '@app.bill_manager'
     app.stripe_service:
         class: AppBundle\Service\StripeService
         arguments:
             - '%app.stripe%'
+    app.email_service:
+        class: AppBundle\Service\EmailService
+        arguments:
+            - '%app.email%'
+            - '@twig'
     app.date_of_booking_validator:
         class: AppBundle\Validator\Constraints\ValidDateOfBookingValidator
         tags:
@@ -61,3 +68,7 @@ services:
             - { name: kernel.event_listener, event: kernel.exception }
         arguments:
             - '@app.redirect_service'
+    app.bill_manager:
+        class: AppBundle\Manager\BillManager
+        arguments:
+            - '@doctrine.orm.default_entity_manager'

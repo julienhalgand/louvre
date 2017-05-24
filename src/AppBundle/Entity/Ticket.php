@@ -10,6 +10,7 @@ use AppBundle\Validator\Constraints as TicketAssert;
  *
  * @ORM\Table(name="ticket")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TicketRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Ticket
 {
@@ -23,6 +24,12 @@ class Ticket
     const AGE_SENIOR = 60;
     const AGE_CHILD = 12;
     const AGE_YOUNG_CHILD = 4;
+    const PRICE_TYPE_NORMAL = 'normal';
+    const PRICE_TYPE_SENIOR = 'senior';
+    const PRICE_TYPE_REDUCED = 'reduced';
+    const PRICE_TYPE_CHILD = 'child';
+    const PRICE_TYPE_YOUNG_CHILD = 'young_child';
+
 
     /**
      * @var int
@@ -39,13 +46,6 @@ class Ticket
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    private $updatedAt;
 
     /**
      * @var string
@@ -94,8 +94,14 @@ class Ticket
     private $reducedPrice;
 
     /**
+     * @var string
+     * @ORM\Column(name="price_type", type="string")
+     */
+    private $priceType;
+
+    /**
      * @var int
-     * @ORM\ManyToOne(targetEntity="Bill", inversedBy="tickets")
+     * @ORM\ManyToOne(targetEntity="Bill", inversedBy="tickets", cascade="persist")
      * @ORM\JoinColumn(name="bill_id", referencedColumnName="id", nullable=false)
      */
     private $bill;
@@ -140,30 +146,6 @@ class Ticket
     public function getCreatedAt()
     {
         return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return Ticket
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**
@@ -301,6 +283,21 @@ class Ticket
     }
 
     /**
+     * @return string
+     */
+    public function getPriceType(): string
+    {
+        return $this->priceType;
+    }
+
+    /**
+     * @param string $priceType
+     */
+    public function setPriceType(string $priceType)
+    {
+        $this->priceType = $priceType;
+    }
+    /**
      * Set price
      *
      * @param integer $price
@@ -355,14 +352,4 @@ class Ticket
     {
         $this->setCreatedAt(new \DateTime("now"));
     }
-    /**
-     * Gets triggered every time on update
-
-     * @ORM\PreUpdate
-     */
-    public function onPreUpdate()
-    {
-        $this->setUpdatedAt(new \DateTime("now"));
-    }
 }
-
