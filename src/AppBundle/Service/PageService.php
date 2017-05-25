@@ -106,7 +106,7 @@ class PageService{
 
             if(gettype($charge) == 'object'){
                 $bill = $this->billSessionService->getBill();
-                $bill->setStripeId($charge->id);
+                $bill->setStripeId(",eistc,ietci,ec");
                 $this->billManager->create($bill);
                 $this->billSessionService->saveInSession($bill);
                 $mailMessage = $this->emailService->sendMail($bill);

@@ -112,7 +112,7 @@ class BillService{
     }
     private function stripeForm(){
         $request = $this->request->getCurrentRequest();
-         $this->billSessionService->getBill();
+        $this->billSessionService->getBill();
         $form = $this->form->create(CreditCardPaymentType::class);
         $form->handleRequest($request);        
         return $form;

@@ -15,7 +15,10 @@ class BillManager{
     }
 
     public function create(Bill $bill){
+        $bill->setTotalPrice(250);
+        dump($bill);
         $this->doctrine->persist($bill);
+        dump($bill);
         $this->doctrine->flush();
         return $bill;
     }

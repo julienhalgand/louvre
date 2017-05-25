@@ -29,6 +29,7 @@ class Ticket
     const PRICE_TYPE_REDUCED = 'reduced';
     const PRICE_TYPE_CHILD = 'child';
     const PRICE_TYPE_YOUNG_CHILD = 'young_child';
+    const MAX_NUMBER_OF_TICKETS_PER_DAY = 1000;
 
 
     /**

@@ -78,7 +78,7 @@ class Bill
     private $ticketType;
 
     /**
-     * @var int
+     * @var string
      *
      * @ORM\Column(name="stripe_id", type="string")
      */
@@ -284,7 +284,7 @@ class Bill
     /**
      * Get stripeId
      *
-     * @return int
+     * @return string
      */
     public function getStripeId()
     {
