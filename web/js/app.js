@@ -45,6 +45,7 @@ $(function() {
     $('#scrollTop').on('click', function() {
         e.preventDefault();
     });
+    cookieAdvisor();
     /*
     var $collectionHolder;
 
