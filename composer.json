@@ -1,5 +1,6 @@
 {
     "name": "julienhalgand/louvre",
+    "description": "Ticketing project for my studies, supposed to be for the Louvre museum.",
     "license": "proprietary",
     "type": "project",
     "autoload": {
