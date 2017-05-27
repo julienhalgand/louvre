@@ -37,10 +37,8 @@
         <h2 class="column menu-centered">{{ Bill.totalPrice }},00 €</h2>
     </div>
     <div class="row">
-        {% image    'images/Pages/pdf.svg'
-                    'images/Pages/printer.svg'
-        %}
-        <img width="20px" src="{{ asset_url }}" alt="Example" />
+        {% image 'images/Pages/pdf.svg' %}
+        <img width="20px" height="20px" src="{{ asset_url }}" alt="Example" />
         {% endimage %}
     </div>
 {% endblock %}
