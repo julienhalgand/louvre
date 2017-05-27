@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraint;
 class ValidReducedPrice extends Constraint
 {
     public $message;
+    public $groups;
 
     public function __construct(){
         $this->message = "This value is not valid.";

@@ -9,14 +9,11 @@ use Symfony\Component\Validator\Validator\RecursiveValidator;
 
 class BillManager{
     private $doctrine;
-    private $validator;
 
     public function __construct(
-        EntityManager $doctrine,
-        RecursiveValidator $validator
+        EntityManager $doctrine
     ){
         $this->doctrine = $doctrine;
-        $this->validator = $validator;
     }
 
     public function create(Bill $bill){
@@ -24,10 +21,4 @@ class BillManager{
         $this->doctrine->flush();
         return $bill;
     }
-
-    public function validate(Bill $bill){
-        $errors = $this->validator->validate($bill);
-            return $errors;
-    }
-
 }

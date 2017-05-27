@@ -68,3 +68,4 @@ stripe:
     security_code: Code de sécurité
 thankyou:
   title: Merci pour votre commande
+  billStripeId: Votre numéro de commande est le

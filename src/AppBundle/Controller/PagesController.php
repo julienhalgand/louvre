@@ -66,8 +66,7 @@ class PagesController extends Controller
      */
     public function thankyouAction(Request $request)
     {
-        return $this->render('pages/thankyou.html.twig', [
-        ]);
+        return $this->get('app.page_service')->renderView('thankyou');
     }
             
 }

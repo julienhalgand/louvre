@@ -20,8 +20,8 @@ class ValidDateOfBookingValidator extends ConstraintValidator
         $dateNow->setTime(0,0,0);
         //Jours fériés
         if($this->holidaysTest($value)){
-            /*$this->context->buildViolation($constraint->message)
-            ->addViolation();*/
+            $this->context->buildViolation($constraint->message)
+            ->addViolation();
         }
     }
     private function holidaysTest($value){

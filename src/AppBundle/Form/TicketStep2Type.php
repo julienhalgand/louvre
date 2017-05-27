@@ -30,6 +30,7 @@ class TicketStep2Type extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
+            'validation_groups' => array('step2Ticket'),
             'data_class' => Ticket::class,
             'error_mapping' => array(
                 '.' => 'country_code',

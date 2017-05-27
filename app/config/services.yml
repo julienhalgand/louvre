@@ -72,4 +72,3 @@ services:
         class: AppBundle\Manager\BillManager
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - '@validator'

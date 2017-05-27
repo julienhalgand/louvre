@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraint;
 class ValidDateOfBooking extends Constraint
 {
     public $message;
-
+    public $groups;
     public function __construct(){
         $this->message = "This value is not valid.";
     }

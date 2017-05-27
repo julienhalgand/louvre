@@ -25,6 +25,7 @@ class BillStep1Type extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
+            'validation_groups' => array('step1Bill'),
             'data_class' => Bill::class,
         ));
     }

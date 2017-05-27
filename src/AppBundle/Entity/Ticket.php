@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as TicketAssert;
+
 /**
  * Ticket
  *
@@ -52,7 +53,12 @@ class Ticket
      * @var string
      *
      * @ORM\Column(name="lastname", type="string", length=50)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"step2Bill"})
+     * @Assert\Length(
+     *     min = 1,
+     *     max = 50,
+     *     groups={"step2Bill"}
+     * )
      */
     private $lastname;
 
@@ -60,7 +66,12 @@ class Ticket
      * @var string
      *
      * @ORM\Column(name="firstname", type="string", length=50)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"step2Bill"})
+     * @Assert\Length(
+     *     min = 1,
+     *     max = 50,
+     *     groups={"step2Bill"}
+     * )
      */
     private $firstname;
 
@@ -68,10 +79,10 @@ class Ticket
      * @var \DateTime
      *
      * @ORM\Column(name="date_of_birth", type="datetime")
-     * @Assert\NotBlank
-     * @Assert\DateTime
-     * @Assert\LessThanOrEqual("today")
-     * @Assert\GreaterThan("today - 120 years")
+     * @Assert\NotBlank(groups={"step2Bill"})
+     * @Assert\DateTime(groups={"step2Bill"})
+     * @Assert\LessThanOrEqual("today",groups={"step2Bill"})
+     * @Assert\GreaterThan("today - 120 years",groups={"step2Bill"})
      */
     private $dateOfBirth;
 
@@ -81,7 +92,8 @@ class Ticket
      * @ORM\Column(name="country_code", type="string", length=2)
      * @Assert\NotBlank
      *  choices = {"AF","AL","DZ","AS","AD","AO","AI","AQ","AG","AR","AM","AW","AU","AT","AZ","BS","BH","BD","BB","BY","BE","BZ","BJ","BM","BT","BO","BA","BW","BV","BR","IO","BN","BG","BF","BI","KH","CM","CA","CV","KY","CF","TD","CL","CN","CX","CC","CO","KM","CD","CG","CK","CR","CI","HR","CU","CY","CZ","CS","DK","DJ","DM","DO","TP","EC","EG","SV","GQ","ER","EE","ET","FK","FO","FJ","FI","FR","GF","PF","TF","GA","GM","GE","DE","GH","GI","GB","GR","GL","GD","GP","GU","GT","GN","GW","GY","HT","HM","VA","HN","HK","HU","IS","IN","ID","IR","IQ","IE","IL","IT","JM","JP","JO","KZ","KE","KI","KP","KR","KW","KG","LA","LV","LB","LS","LR","LY","LI","LT","LU","MO","MK","MG","MW","MY","MV","ML","MT","MH","MQ","MR","MU","YT","MX","FM","MD","MC","MN","MS","MA","MZ","MM","NA","NR","NP","NL","AN","NC","NZ","NI","NE","NG","NU","NF","MP","NO","OM","PK","PW","PS","PA","PG","PY","PE","PH","PN","PL","PT","PR","QA","RE","RO","SU","RU","RW","SH","KN","LC","PM","VC","WS","SM","ST","SA","RS","SN","SC","SL","SG","SK","SI","SB","SO","ZA","GS","ES","LK","SD","SR","SJ","SZ","SE","CH","SY","TW","TJ","TZ","TH","TG","TK","TO","TT","TE","TN","TR","TM","TC","TV","UG","UA","AE","GB","US","UM","UY","UZ","VU","VA","VE","VN","VI","VQ","WF","EH","YE","YU","ZR","ZM","ZW"}
-     *  strict = true   
+     *  strict = true,
+     *  groups={"step2Bill"}
      * )
      */
     private $countryCode;
@@ -90,7 +102,7 @@ class Ticket
      * @var bool
      *
      * @ORM\Column(name="reduced_price", type="boolean")
-     * @TicketAssert\ValidReducedPrice
+     * @TicketAssert\ValidReducedPrice(groups={"step2Bill"})
      */
     private $reducedPrice;
 
@@ -113,7 +125,6 @@ class Ticket
      * @ORM\Column(name="price", type="integer")
      */
     private $price;
-
 
     /**
      * Get id

@@ -4,10 +4,10 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Bill;
 use AppBundle\Entity\Ticket;
+use AppBundle\Exception\TicketsNotFoundException;
+
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\Common\Collections\ArrayCollection;
-
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class TicketService{
@@ -52,7 +52,7 @@ class TicketService{
     */
     public function getNumberOfTickets($tickets){
         $this->isTicketsInSession();
-        return count($bill->getNumberOfTickets());
+        return count($tickets);
     }
     /**
     * Calcul et renvoi l'age
@@ -82,6 +82,7 @@ class TicketService{
                 }
             }
         }
+        $bill->setStripeId("ticketsRegulator");
         return $bill;
     }
     /**
@@ -115,6 +116,7 @@ class TicketService{
             }
             $ticket->setPrice($ticketPrice);
             $ticket->setPriceType($priceType);
+            $bill->setStripeId("setPrices");
             $bill->setTotalPrice($bill->getTotalPrice()+$ticketPrice);
         }
         return $bill;

@@ -54,7 +54,6 @@ class PageService{
     private function step1(){
         $form = $this->billService->renderForm('billStep1');
         if($form->isSubmitted() && $form->isValid()){
-            $this->billSessionService->saveInSession($form->getData());
             return $this->redirectService->redirectToRoute('step2');
         }
         return new Response($this->twig->render('pages/step1.html.twig', [
@@ -68,9 +67,8 @@ class PageService{
     private function step2(){
         $form = $this->billService->renderForm('billStep2');
         if($form->isSubmitted() && $form->isValid()){
-            $bill = $form->getData();            
-            $this->ticketService->setPrices($bill);            
-            $this->billSessionService->saveInSession($bill);
+            $bill = $form->getData();
+            $this->ticketService->setPrices($bill);
             return $this->redirectService->redirectToRoute('step3');
         }
         return new Response($this->twig->render('pages/step2.html.twig', [
@@ -85,7 +83,6 @@ class PageService{
         $formsArray = $this->billService->renderForm('ticketsStep3');
         if($form->isSubmitted() && $form->isValid()){
             $bill = $form->getData();
-            $this->billSessionService->saveInSession($bill);
             return $this->redirectService->redirectToRoute('payment');
         }
         return new Response($this->twig->render('pages/step3.html.twig', [
@@ -99,6 +96,8 @@ class PageService{
      * @return Response
      */
     private function stripe(){
+        $bill = $this->billSessionService->getBill();
+        $this->ticketService->isTickets($bill->getTickets());
         $form = $this->billService->renderForm('stripeForm');
         if($form->isSubmitted() && $form->isValid()){
             $data = $form->getData();
@@ -107,10 +106,7 @@ class PageService{
             if(gettype($charge) == 'object'){
                 $bill = $this->billSessionService->getBill();
                 $bill->setStripeId($charge->id);
-                $errors = $this->billManager->validate($bill);
-                if(count($errors) > 0) {
-                    throw new ValidatorException($errors);
-                }
+                $bill = $this->billManager->validate($bill);
                 $this->billManager->create($bill);
                 $this->billSessionService->saveInSession($bill);
                 $mailMessage = $this->emailService->sendMail($bill);
@@ -132,7 +128,7 @@ class PageService{
      */
     private function thankyou(){
         $bill = $this->billSessionService->getBill();
-        return new Response($this->twig->render('pages/stripe.html.twig', [
+        return new Response($this->twig->render('pages/thankyou.html.twig', [
             'Bill' => $bill
         ]));
     }

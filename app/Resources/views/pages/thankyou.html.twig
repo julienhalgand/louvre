@@ -2,5 +2,45 @@
 {% block title %}{{ 'thankyou.title'|trans }}{% endblock %}
 {% block body %}
 <h2>{{ 'thankyou.title'|trans }}</h2>
+    <div class="row">
+        <div class="columns text-center">
+            {{ 'thankyou.billStripeId'|trans }} <strong>{{ Bill.stripeId }}</strong>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th>{{'step3.firstname'|trans}}</th>
+                <th>{{'step3.lastname'|trans}}</th>
+                <th>{{'step3.dateOfBirth'|trans}}</th>
+                <th>{{'step3.reducedPrice'|trans}}</th>
+                <th>{{'step3.price'|trans}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for key,ticket in Bill.tickets %}
+                <tr>
+                    <td>{{ ticket.firstname }}</td>
+                    <td>{{ ticket.lastname }}</td>
+                    <td>{{ ticket.dateOfBirth | date('m/d/Y') }}</td>
+                    <td>{{ ticket.priceType|trans }}</td>
+                    <td>{{ ticket.price }}.00 €</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
+    <div class="row">
+        <h2 class="column menu-centered">{{ 'step3.totalPrice'|trans }}</h2>
+    </div>
+    <div class="row">
+        <h2 class="column menu-centered">{{ Bill.totalPrice }},00 €</h2>
+    </div>
+    <div class="row">
+        {% image    'images/Pages/pdf.svg'
+                    'images/Pages/printer.svg'
+        %}
+        <img width="20px" src="{{ asset_url }}" alt="Example" />
+        {% endimage %}
+    </div>
 {% endblock %}

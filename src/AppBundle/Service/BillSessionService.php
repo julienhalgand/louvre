@@ -38,7 +38,7 @@ class BillSessionService{
     */
     public function getBill(){
         $this->isBillInSession();
-        return clone $this->getCurrentSession()->get('Bill');
+        return $this->getCurrentSession()->get('Bill');
     }
 
     /**

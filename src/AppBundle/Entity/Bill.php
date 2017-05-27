@@ -45,10 +45,10 @@ class Bill
      *
      * @ORM\Column(name="email", type="string", length=100)
      * @Assert\NotBlank
-     * @Assert\Email(  
-     *  checkMX = true   
+     * @Assert\Email(
+     *  checkMX = true
      * )
-     
+
      */
     private $email;
 
@@ -56,11 +56,12 @@ class Bill
      * @var \DateTime
      *
      * @ORM\Column(name="date_of_booking", type="datetime")
-     * @Assert\NotBlank
-     * @Assert\DateTime
-     * @Assert\GreaterThanOrEqual("today")
-     * @Assert\LessThan("today +1 years")
-     * @BillAssert\ValidDateOfBooking(message="bill.dateOfBooking.validDateOfBooking")
+     * @Assert\NotBlank(groups={"step1Bill"})
+     * @Assert\DateTime(groups={"step1Bill"})
+     * @Assert\GreaterThanOrEqual("today",groups={"step1Bill"})
+     * @Assert\LessThan("today +1 years",groups={"step1Bill"})
+     * @BillAssert\ValidDateOfBooking(message="bill.dateOfBooking.validDateOfBooking",groups={"step1Bill"})
+     *
      */
     private $dateOfBooking;
 
@@ -68,12 +69,13 @@ class Bill
      * @var string
      *
      * @ORM\Column(name="ticket_type", type="string", length=12)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"step1Bill"})
      * @Assert\Choice(
      *  choices = {Bill::TYPE_ALL_JOURNEY, Bill::TYPE_HALF_JOURNEY},
-     *  strict = true
+     *  strict = true,
+     *  groups={"step1Bill"}
      * )
-     * @BillAssert\ValidTicketType(message="bill.ticketType.validTicketType")
+     * @BillAssert\ValidTicketType(message="bill.ticketType.validTicketType",groups={"step1Bill"})
      */
     private $ticketType;
 
@@ -81,6 +83,7 @@ class Bill
      * @var string
      *
      * @ORM\Column(name="stripe_id", type="string")
+     *
      */
     private $stripeId;
 
@@ -88,9 +91,9 @@ class Bill
      * @var int
      *
      * @ORM\Column(name="number_of_tickets", type="integer")
-     * @Assert\GreaterThanOrEqual(1)
-     * @Assert\LessThanOrEqual(1000)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"step1Bill"})
+     * @Assert\GreaterThanOrEqual(1,groups={"step1Bill"})
+     * @Assert\LessThanOrEqual(1000,groups={"step1Bill"})
      */
     private $numberOfTickets = 1;
 
@@ -106,10 +109,14 @@ class Bill
     * @ORM\OneToMany(targetEntity="Ticket", mappedBy="bill", orphanRemoval=true, cascade="persist")
     * @Assert\All({
     *   @Assert\Type(type="AppBundle\Entity\Ticket")
-    * })
+    * },groups={"step2Bill"})
     * @Assert\Valid
     */
     private $tickets;
+    /**
+     * @var string
+     */
+    private $step;
 
     public function __construct()
     {
@@ -333,6 +340,23 @@ class Bill
         $this->setNumberOfTickets($this->getNumberOfTickets()-1);
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getStep(): string
+    {
+        return $this->step;
+    }
+
+    /**
+     * @param string $step
+     */
+    public function setStep(string $step)
+    {
+        $this->step = $step;
+    }
+
     /**
      * Gets triggered only on insert
 

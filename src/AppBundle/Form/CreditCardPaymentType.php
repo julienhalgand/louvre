@@ -24,6 +24,7 @@ class CreditCardPaymentType extends AbstractType
         $builder
             ->add('card_number', TextType::class, array('attr' => array(
                 'placeholder' => 'stripe.placeholder.card_number',
+                'value'       => '4242424242424242',
                 'data-stripe' => 'number'
             )))
             ->add('expiration_month', ChoiceType::class, array('attr' => array(
@@ -49,6 +50,7 @@ class CreditCardPaymentType extends AbstractType
             ),'choices' => $yearsAvalable))
             ->add('security_code', TextType::class, array('attr' => array(
                 'placeholder' => 'stripe.placeholder.security_code',
+                'value'       => '123',
                 'data-stripe' => 'cvc'
                 )))
             ->add('stripe_token', HiddenType::class);
