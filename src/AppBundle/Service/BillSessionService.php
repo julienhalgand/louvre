@@ -24,6 +24,7 @@ class BillSessionService{
         }
         return false;
     }
+
     /**
     * Test si Bill existe en session
     * @return BillNotFoundException
@@ -31,8 +32,9 @@ class BillSessionService{
     private function isBillInSession(){
         if(!$this->getCurrentSession()->get('Bill')){
             throw new BillNotFoundException();
-        }       
+        }
     }
+
     /**
     * Renvoi Bill depuis la session
     */
@@ -48,6 +50,7 @@ class BillSessionService{
     public function saveInSession(Bill $bill){
         return $this->getCurrentSession()->set('Bill', $bill);
     }
+
     /**
     * Get current session
     * @return Session

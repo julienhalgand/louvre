@@ -16,16 +16,15 @@ class BillStep1Type extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options){
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event){
+           /* ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event){
                 $bill = $event->getData();
                 $dateOfBookingInputValue = '';
                 if ($bill->getDateOfBooking() != null){
                     $dateOfBookingInputValue = $bill->getDateOfBooking();
                 }
-                dump($dateOfBookingInputValue);
-                $form = $event->getForm();
-                $form->add('date_of_booking', TextType::class, array('attr' => array('placeholder' => 'dateOfBookingPlaceHolder', 'value' => $dateOfBookingInputValue)));
-            })
+                $form = $event->getForm();*/
+                ->add('date_of_booking', TextType::class, array('attr' => array('placeholder' => 'dateOfBookingPlaceHolder'/*, 'value' => $dateOfBookingInputValue*/)))
+           /* })*/
             ->add('email', EmailType::class, array('attr' => array('placeholder' => 'example@example.example')))
             ->add('ticket_type', ChoiceType::class, array(
                 'choices' => Bill::TYPE_TICKET_TYPE_ARRAY

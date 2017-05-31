@@ -10,7 +10,7 @@ $(function() {
     var dateNow = new Date(),
         lang = $('html').attr("lang");
     //Date picker date of booking
-    if (typeof holidays != "undefined") {
+   /* if (typeof holidays != "undefined") {
         $('#bill_step1_date_of_booking').fdatepicker({
             language: lang,
             format: 'dd/mm/yyyy',
@@ -24,7 +24,7 @@ $(function() {
             closeIcon: 'X',
             closeButton: true
         });
-    }
+    }*/
     //Date picker date of birth
     var $tickets = $('[id*="_date_of_birth"]');
     console.log($tickets.length);

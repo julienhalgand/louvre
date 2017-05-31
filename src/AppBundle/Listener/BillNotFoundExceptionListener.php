@@ -5,7 +5,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use AppBundle\Exception\{
-    NoTicketsAvailableException, BillNotFoundException, TicketsNotFoundException, NoTicketsAvailableException
+    NoTicketsAvailableException, BillNotFoundException, TicketsNotFoundException/*, NoTicketsAvailableException*/
 };
 use AppBundle\Service\RedirectService;
 
@@ -24,10 +24,10 @@ class BillNotFoundExceptionListener
 
         if ($exception instanceof BillNotFoundException) {
             $event->setResponse($this->redirectService->redirectToRoute('step1'));
-        }elseif ($exception instanceof NoTicketsAvailableException){
+        }/*elseif ($exception instanceof NoTicketsAvailableException){
             // set Flash message
             $event->setResponse($this->redirectService->redirectToRoute('step1'));
-        }elseif ($exception instanceof TicketsNotFoundException){
+        }*/elseif ($exception instanceof TicketsNotFoundException){
             $event->setResponse($this->redirectService->redirectToRoute('step2'));            
         }
     }
