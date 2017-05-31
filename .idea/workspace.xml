@@ -2,30 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="434296b8-9599-4e94-9217-e7290882e735" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Exception/NoTicketsAvailableException.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/louvre.iml" afterPath="$PROJECT_DIR$/.idea/louvre.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/translations/messages.en.yml" afterPath="$PROJECT_DIR$/app/Resources/translations/messages.en.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/translations/messages.fr.yml" afterPath="$PROJECT_DIR$/app/Resources/translations/messages.fr.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/email/bill.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/email/bill.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/pages/step1.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/pages/step1.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/pages/step2.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/pages/step2.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/pages/step3.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/pages/step3.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/pages/stripe.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/pages/stripe.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/pages/thankyou.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/pages/thankyou.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/PagesController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/PagesController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Entity/Bill.php" afterPath="$PROJECT_DIR$/src/AppBundle/Entity/Bill.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Entity/Ticket.php" afterPath="$PROJECT_DIR$/src/AppBundle/Entity/Ticket.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Form/BillStep1Type.php" afterPath="$PROJECT_DIR$/src/AppBundle/Form/BillStep1Type.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Form/BillStep3Type.php" afterPath="$PROJECT_DIR$/src/AppBundle/Form/BillStep3Type.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Listener/BillNotFoundExceptionListener.php" afterPath="$PROJECT_DIR$/src/AppBundle/Listener/BillNotFoundExceptionListener.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Manager/BillManager.php" afterPath="$PROJECT_DIR$/src/AppBundle/Manager/BillManager.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Service/EmailService.php" afterPath="$PROJECT_DIR$/src/AppBundle/Service/EmailService.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Service/PageService.php" afterPath="$PROJECT_DIR$/src/AppBundle/Service/PageService.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Service/TicketService.php" afterPath="$PROJECT_DIR$/src/AppBundle/Service/TicketService.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/images/Pages/pdf.svg" afterPath="$PROJECT_DIR$/web/images/Pages/pdf.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/images/Pages/printer.svg" afterPath="$PROJECT_DIR$/web/images/Pages/printer.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/app.js" afterPath="$PROJECT_DIR$/web/js/app.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -702,7 +681,7 @@
       <workItem from="1496036302243" duration="671000" />
       <workItem from="1496076749332" duration="11521000" />
       <workItem from="1496197212540" duration="253000" />
-      <workItem from="1496198151979" duration="4600000" />
+      <workItem from="1496198151979" duration="4640000" />
     </task>
     <task id="LOCAL-00001" summary="Go for tests">
       <created>1495584001409</created>
@@ -746,11 +725,18 @@
       <option name="project" value="LOCAL" />
       <updated>1495905194033</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="31/05/2017">
+      <created>1496236121302</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1496236121302</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="104261000" />
+    <option name="totallyTimeSpent" value="104301000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -798,7 +784,8 @@
     <MESSAGE value="Test" />
     <MESSAGE value="Groups validation works" />
     <MESSAGE value="Add printer pdf svg" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add printer pdf svg" />
+    <MESSAGE value="31/05/2017" />
+    <option name="LAST_COMMIT_MESSAGE" value="31/05/2017" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
