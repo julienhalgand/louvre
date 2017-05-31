@@ -21,4 +21,13 @@ class BillManager{
         $this->doctrine->flush();
         return $bill;
     }
+
+    public function countNumberOfTicketsAvailableWithDateOfBooking(Bill $bill){
+        $dateOfBooking = $bill->getDateOfBooking();
+        $queryBuilder = $this->doctrine->getRepository('AppBundle:Ticket')->createQueryBuilder('bill');
+        $queryBuilder->select('bill.id');
+        $queryBuilder->where('bill.dateOfBooking = :dateOfBooking');
+        $queryBuilder->setParameter('dateOfBooking', $dateOfBooking);
+        return $queryBuilder->getQuery()->getSingleScalarResult() - 1000;
+    }
 }

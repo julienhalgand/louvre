@@ -13,7 +13,7 @@ $(function() {
     if (typeof holidays != "undefined") {
         $('#bill_step1_date_of_booking').fdatepicker({
             language: lang,
-            initialDate: dateNow,
+            format: 'dd/mm/yyyy',
             startDate: dateNow,
             endDate: new Date(dateNow.getFullYear() + 1, dateNow.getMonth(), dateNow.getDate()),
             daysOfWeekDisabled: [0, 2],
@@ -26,11 +26,12 @@ $(function() {
         });
     }
     //Date picker date of birth
-    if (typeof numberOfTickets != "undefined") {
-        for (i = 0; i < numberOfTickets; i++) {
-            $('#bill_step2_tickets_' + i + '_date_of_birth').fdatepicker({
+    var $tickets = $('[id*="_date_of_birth"]');
+    console.log($tickets.length);
+        for (i = 0; i < $tickets.length; i++) {
+            $($tickets[i]).fdatepicker({
                 language: lang,
-                initialDate: dateNow,
+                format: 'dd/mm/yyyy',
                 startDate: "1900-01-01",
                 endDate: dateNow,
                 disableDblClickSelection: true,
@@ -40,8 +41,6 @@ $(function() {
                 closeButton: true
             });
         }
-
-    }
     $('#scrollTop').on('click', function() {
         e.preventDefault();
     });

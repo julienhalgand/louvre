@@ -44,7 +44,6 @@ class EmailService{
         $this->mailer->Subject = 'Billeterie du Louvre - Vos billets pour le '+$bill->getDateOfBooking();
         $this->mailer->Body= $this->renderBill($bill);
         $this->mailer->isHTML(true);
-
         if(!$this->mailer->send()) {
             return $this->mailer->ErrorInfo;
             exit();
@@ -54,9 +53,12 @@ class EmailService{
         }
     }
     public function renderBill(Bill $bill){
-        return $this->twig->render('email/bill.html.twig', [
+
+        $render = $this->twig->render('email/bill.html.twig', [
             'Bill'          => $bill
         ]);
+        die(dump($render));
+        return $render;
     }
 
 }

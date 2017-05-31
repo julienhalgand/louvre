@@ -1,28 +1,30 @@
 {% extends 'base.html.twig' %}
 {% block title %}{{ 'step1.title'|trans }}{% endblock %}
 {% block body %}
-<h2>{{ 'step1.stepNumber'|trans }}</h2>
-{{ form_start(form, {'method': 'POST', 'attr':{ 'novalidate': 'novalidate', 'data-abide': null, 'class': 'text-center'}}) }}
-  <div data-abide-error class="alert callout" style="display: none;">
-    <p><i class="fi-alert"></i>{{'form.formError'|trans}}</p>
-  </div>
-  {% if (form_errors(form)) %}
-    <div class="alert callout">
-        {{ form_errors(form) }}
+    <div class="row">
+        <h2>{{ 'step1.stepNumber'|trans }}</h2>
     </div>
-  {% endif %}
-{{ form_widget(form) }}
-  <div class="row">
-    <fieldset class="large-4 small-12 columns">
-      <a href="/" class="button expanded">Retour à la page d'accueil</a>
-    </fieldset>
-    <fieldset class="large-4 small-12 columns">
-      <button class="button expanded" type="reset" value="Reset">Reset</button>
-    </fieldset>
-    <fieldset class="large-4 small-12 columns">
-      <button class="button expanded" type="submit" value="Submit">Passer à l'étape suivante</button>
-    </fieldset>
-  </div>
-{{ form_end(form) }}
-<script>var holidays = {{holidays|raw}}</script>
+    {{ form_start(form, {'method': 'POST', 'attr':{ 'novalidate': 'novalidate', 'data-abide': null, 'class': 'text-center', 'id': 'step1Form'}}) }}
+      <div data-abide-error class="alert callout" style="display: none;">
+        <p><i class="fi-alert"></i>{{'form.formError'|trans}}</p>
+      </div>
+      {% if (form_errors(form)) %}
+        <div class="alert callout">
+            {{ form_errors(form) }}
+        </div>
+      {% endif %}
+    {{ form_widget(form) }}
+      <div class="row">
+        <fieldset class="large-4 small-12 columns">
+          <a href="/" class="button expanded">Retour à la page d'accueil</a>
+        </fieldset>
+        <fieldset class="large-4 small-12 columns">
+          <button class="button expanded" type="reset" value="Reset">Reset</button>
+        </fieldset>
+        <fieldset class="large-4 small-12 columns">
+          <button class="button expanded" type="submit" value="Submit">Passer à l'étape suivante</button>
+        </fieldset>
+      </div>
+    {{ form_end(form) }}
+    <script>var holidays = {{holidays|raw}}</script>
 {% endblock %}

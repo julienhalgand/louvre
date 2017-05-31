@@ -44,9 +44,10 @@ class Bill
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=100)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"step1Bill"})
      * @Assert\Email(
-     *  checkMX = true
+     *  checkMX = true,
+     *  groups={"step1Bill"}
      * )
 
      */
@@ -121,7 +122,6 @@ class Bill
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
-        $this->dateOfBooking = new \DateTime();
     }
     function __clone() {
         $this->tickets = clone $this->tickets;
@@ -193,7 +193,7 @@ class Bill
      */
     public function setDateOfBooking($dateOfBooking)
     {
-        $this->dateOfBooking = new \DateTime($dateOfBooking);
+        $this->dateOfBooking = \DateTime::createFromFormat('d/m/Y', $dateOfBooking);
 
         return $this;
     }
@@ -205,6 +205,9 @@ class Bill
      */
     public function getDateOfBooking()
     {
+        if($this->dateOfBooking === null){
+            return null;
+        }
         return $this->dateOfBooking->format('d/m/Y');
     }
 

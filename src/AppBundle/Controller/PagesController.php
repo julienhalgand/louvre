@@ -2,19 +2,15 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Ticket;
-use AppBundle\Service\PageService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PagesController extends Controller
 {
     /**
      * @Route("/", name="homepage")
-     * @Method({"GET","HEAD"})
      */
     public function homepageAction(Request $request)
     {
@@ -49,7 +45,7 @@ class PagesController extends Controller
      */
     public function deleteTicket(Request $request, Int $id)
     {
-        return $this->get('app.page_service')->deleteTicket();
+        return $this->get('app.page_service')->deleteTicket($id);
 
     }
     /**
@@ -67,6 +63,21 @@ class PagesController extends Controller
     public function thankyouAction(Request $request)
     {
         return $this->get('app.page_service')->renderView('thankyou');
+    }
+
+    /**
+     * @Route("/bill/print", name="billPrint")
+     * @Method({"GET","HEAD"})
+     */
+    public function billPrintAction(Request $request){
+        return $this->get('app.page_service')->billPrint();
+    }
+    /**
+     * @Route("/bill/pdf", name="billPDF")
+     * @Method({"GET","HEAD"})
+     */
+    public function billToPDFAction(Request $request){
+        return $this->get('app.page_service')->billToPDF();
     }
             
 }

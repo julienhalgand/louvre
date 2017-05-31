@@ -54,7 +54,11 @@ class PageService{
     private function step1(){
         $form = $this->billService->renderForm('billStep1');
         if($form->isSubmitted() && $form->isValid()){
-            return $this->redirectService->redirectToRoute('step2');
+            $bill = $form->getData();
+           if($this->billManager->countNumberOfTicketsAvailableWithDateOfBooking($bill) > 0){
+               return $this->redirectService->redirectToRoute('step2');
+           }
+
         }
         return new Response($this->twig->render('pages/step1.html.twig', [
             'form'          => $form->createView(),
@@ -69,6 +73,7 @@ class PageService{
         if($form->isSubmitted() && $form->isValid()){
             $bill = $form->getData();
             $this->ticketService->setPrices($bill);
+
             return $this->redirectService->redirectToRoute('step3');
         }
         return new Response($this->twig->render('pages/step2.html.twig', [
@@ -82,7 +87,6 @@ class PageService{
         $form = $this->billService->renderForm('billStep3');
         $formsArray = $this->billService->renderForm('ticketsStep3');
         if($form->isSubmitted() && $form->isValid()){
-            $bill = $form->getData();
             return $this->redirectService->redirectToRoute('payment');
         }
         return new Response($this->twig->render('pages/step3.html.twig', [
@@ -101,12 +105,10 @@ class PageService{
         $form = $this->billService->renderForm('stripeForm');
         if($form->isSubmitted() && $form->isValid()){
             $data = $form->getData();
-            $charge = $this->stripeService->charge($data['stripe_token'],100);
-
+            $charge = $this->stripeService->charge($data['stripe_token'],$bill->getTotalPrice());
             if(gettype($charge) == 'object'){
                 $bill = $this->billSessionService->getBill();
                 $bill->setStripeId($charge->id);
-                $bill = $this->billManager->validate($bill);
                 $this->billManager->create($bill);
                 $this->billSessionService->saveInSession($bill);
                 $mailMessage = $this->emailService->sendMail($bill);
@@ -136,7 +138,7 @@ class PageService{
     /**
      * @return Response
      */
-    public function deleteTicket(){
+    public function deleteTicket($id){
         $formArray = $this->billService->renderForm('ticketsStep3Form');
         $bill = $this->billSessionService->getBill();
         if($bill->countTickets($bill) > 1){

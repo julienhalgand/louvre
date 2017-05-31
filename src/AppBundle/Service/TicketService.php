@@ -59,7 +59,7 @@ class TicketService{
     */
     public function getAge(Ticket $ticket){
         $dateDifference = date_diff(new \DateTime(),$ticket->getDateOfBirthObject());
-        return $dateDifference->format('Y');
+        return $dateDifference->y;
     }
     /**
     * Régule le nombre de ticket en session en fonction du nombre désiré par l'utilisateur
@@ -91,7 +91,12 @@ class TicketService{
     */
     public function setPrices(Bill $bill){
         $tickets = $bill->getTickets();
-        foreach($tickets as $ticket){
+        $firstIteration = true;
+        foreach($tickets as $key => $ticket){
+            if ($firstIteration){
+                $firstIteration = false;
+                $bill->setTotalPrice(0);
+            }
             $age            = $this->getAge($ticket);
             $ticketPrice    = Ticket::PRICE_NORMAL;
             $priceType      = Ticket::PRICE_TYPE_NORMAL;
@@ -116,7 +121,6 @@ class TicketService{
             }
             $ticket->setPrice($ticketPrice);
             $ticket->setPriceType($priceType);
-            $bill->setStripeId("setPrices");
             $bill->setTotalPrice($bill->getTotalPrice()+$ticketPrice);
         }
         return $bill;

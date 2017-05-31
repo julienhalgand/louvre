@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 {% block title %}{{ 'step3.title'|trans }}{% endblock %}
 {% block body %}
-<h2>{{ 'step3.stepNumber'|trans }}</h2>
+  <div class="row">
+    <h2>{{ 'step3.stepNumber'|trans }}</h2>
+  </div>
   <div class="row">
     <table>
       <thead>
@@ -35,15 +37,15 @@
     </table>
   </div>
 
-    <div class="row">
-      <h2 class="column menu-centered">{{ 'step3.totalPrice'|trans }}</h2>
-    </div>
-    <div class="row">
-      <h2 class="column menu-centered">{{ Bill.totalPrice }},00 €</h2>
-    </div>
+  <div class="row">
+    <h2 class="column menu-centered">{{ 'step3.totalPrice'|trans }}</h2>
+  </div>
+  <div class="row">
+    <h2 class="column menu-centered">{{ Bill.totalPrice }},00 €</h2>
+  </div>
 
-  {{ form_start(form,{'method': 'POST'}) }}  
-  {{ form_widget(form) }}    
+  {{ form_start(form,{'method': 'POST'}) }}
+  {{ form_widget(form) }}
   <div class="row">
     <fieldset class="large-6 small-12 columns">
       <a href="{{path('step2')}}" class="button expanded">Retour à l'étape précédente</a>
@@ -53,5 +55,4 @@
     </fieldset>
   </div>
   {{ form_end(form) }}
-
 {% endblock %}

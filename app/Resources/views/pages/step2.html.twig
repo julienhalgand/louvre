@@ -1,35 +1,36 @@
 {% extends 'base.html.twig' %}
 {% block title %}{{ 'step2.title'|trans }}{% endblock %}
 {% block body %}
-<h2>{{ 'step2.stepNumber'|trans }}</h2>
-{{ form_start(form, {'method': 'POST', 'attr':{ 'novalidate': 'novalidate', 'data-abide': null, 'class': 'text-center'}}) }}
-  <div data-abide-error class="alert callout" style="display: none;">
-    <p><i class="fi-alert"></i>{{'form.formError'|trans}}</p>
-  </div>
-  {% if (form_errors(form)) %}
-    <div class="alert callout">
-        {{ form_errors(form) }}
+    <div class="row">
+        <h2>{{ 'step2.stepNumber'|trans }}</h2>
     </div>
-  {% endif %}
-  {% for key,ticket in form.tickets %}
-      <label>{{ 'ticket'|trans }} {{key+1}}</label>
-      {{ form_row(ticket.firstname) }}
-      {{ form_row(ticket.lastname) }}
-      {{ form_row(ticket.date_of_birth) }}
-      {{ form_row(ticket.country_code) }}
-      {{ form_row(ticket.reduced_price) }}
-  {% endfor %}
-  <div class="row">
-    <fieldset class="large-4 small-12 columns">
-      <a href="{{path('step1')}}" class="button expanded">Retour à l'étape précédente</a>
-    </fieldset>
-    <fieldset class="large-4 small-12 columns">
-      <button class="button expanded" type="reset" value="Reset">Reset</button>
-    </fieldset>
-    <fieldset class="large-4 small-12 columns">
-      <button class="button expanded" type="submit" value="Submit">Passer à l'étape suivante</button>
-    </fieldset>
-  </div>
-{{ form_end(form) }}
-    <script>var numberOfTickets = {{form.tickets|length}};</script>
+    {{ form_start(form, {'method': 'POST', 'attr':{ 'novalidate': 'novalidate', 'data-abide': null, 'class': 'text-center'}}) }}
+      <div data-abide-error class="alert callout" style="display: none;">
+        <p><i class="fi-alert"></i>{{'form.formError'|trans}}</p>
+      </div>
+      {% if (form_errors(form)) %}
+        <div class="alert callout">
+            {{ form_errors(form) }}
+        </div>
+      {% endif %}
+      {% for key,ticket in form.tickets %}
+          <label>{{ 'ticket'|trans }} {{key+1}}</label>
+          {{ form_row(ticket.firstname) }}
+          {{ form_row(ticket.lastname) }}
+          {{ form_row(ticket.date_of_birth) }}
+          {{ form_row(ticket.country_code) }}
+          {{ form_row(ticket.reduced_price) }}
+      {% endfor %}
+      <div class="row">
+        <fieldset class="large-4 small-12 columns">
+          <a href="{{path('step1')}}" class="button expanded">Retour à l'étape précédente</a>
+        </fieldset>
+        <fieldset class="large-4 small-12 columns">
+          <button class="button expanded" type="reset" value="Reset">Reset</button>
+        </fieldset>
+        <fieldset class="large-4 small-12 columns">
+          <button class="button expanded" type="submit" value="Submit">Passer à l'étape suivante</button>
+        </fieldset>
+      </div>
+    {{ form_end(form) }}
 {% endblock %}

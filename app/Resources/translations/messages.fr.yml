@@ -2,7 +2,7 @@ home:
   title: Accueil
   schedulesPrices: Horaires et tarifs
 Date of booking: Jour de votre visite
-dateOfBookingPlaceHolder: 01/01/2000
+dateOfBookingPlaceHolder: jj/mm/yyyy
 Email: Votre adresse email
 example@example.example: example@example.example
 Journée: Journée
@@ -69,3 +69,4 @@ stripe:
 thankyou:
   title: Merci pour votre commande
   billStripeId: Votre numéro de commande est le
+  newBill: Nouvelle commande

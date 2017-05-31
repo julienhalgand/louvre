@@ -1,5 +1,5 @@
 Date of booking: Day of your visit
-dateOfBookingPlaceHolder: 01/01/2000
+dateOfBookingPlaceHolder: dd/mm/yyyy
 Email: Votre adresse email
 example@example.example: example@example.example
 Journée: Journée

@@ -1,28 +1,29 @@
 {% extends 'base.html.twig' %}
 {% block title %}{{ 'stripe.title'|trans }}{% endblock %}
 {% block body %}
-<h2>{{ 'stripe.title'|trans }}</h2>
-{{ form_start(form, {'method': 'POST', 'attr':{ 'novalidate': 'novalidate', 'data-abide': null, 'class': 'text-center', 'id': 'stripeForm'}}) }}
-  <div data-abide-error class="alert callout" style="display: none;">
-    <p><i class="fi-alert"></i>{{'form.formError'|trans}}</p>
-  </div>
-  {% if (form_errors(form)) %}
-    <div class="alert callout">
-        {{ form_errors(form) }}
+    <div class="row">
+        <h2>{{ 'stripe.title'|trans }}</h2>
     </div>
-  {% endif %}
-{{ form_widget(form) }}
-  <div class="row">
-    <fieldset class="large-6 small-12 columns">
-      <a href="{{path('step3')}}" class="button expanded">Retour à l'étape précédente</a>
-    </fieldset>
-    <fieldset class="large-6 small-12 columns">
-      <button class="button expanded" type="submit" value="Submit" id="submitForm">Confirmer le paiement</button>
-    </fieldset>
-  </div>
-{{ form_end(form) }}
+    {{ form_start(form, {'method': 'POST', 'attr':{ 'novalidate': 'novalidate', 'data-abide': null, 'class': 'text-center', 'id': 'stripeForm'}}) }}
+      <div data-abide-error class="alert callout" style="display: none;">
+        <p><i class="fi-alert"></i>{{'form.formError'|trans}}</p>
+      </div>
+      {% if (form_errors(form)) %}
+        <div class="alert callout">
+            {{ form_errors(form) }}
+        </div>
+      {% endif %}
+    {{ form_widget(form) }}
+      <div class="row">
+        <fieldset class="large-6 small-12 columns">
+          <a href="{{path('step3')}}" class="button expanded">Retour à l'étape précédente</a>
+        </fieldset>
+        <fieldset class="large-6 small-12 columns">
+          <button class="button expanded" type="submit" value="Submit" id="submitForm">Confirmer le paiement</button>
+        </fieldset>
+      </div>
+    {{ form_end(form) }}
 {% endblock %}
-
 
 {% block javascripts %}
   {% javascripts  'js/vendor/jquery.js'
@@ -39,7 +40,6 @@
   {% endjavascripts %}
   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
   <script>
-  //4242 4242 4242 4242
       Stripe.setPublishableKey("{{ stripeApiKey }}");
       var $form = $('#stripeForm');
       $form.submit(function(e){
