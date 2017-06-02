@@ -60,6 +60,7 @@ step3:
   deleteConfirmation: Êtes-vous sur de vouloir supprimer ce billet ?
   totalPrice: Total TTC
   oneTicketAtLeast: Vous devez avoir au moins un ticket dans votre commande
+  orderDateOfBooking: Votre commande pour le 
 stripe:
   title: Paiement
   placeholder:
