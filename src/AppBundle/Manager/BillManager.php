@@ -2,7 +2,9 @@
 
 namespace AppBundle\Manager;
 
-use AppBundle\Entity\Bill;
+use AppBundle\Entity\{
+    Bill, Ticket
+};
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
@@ -24,10 +26,16 @@ class BillManager{
 
     public function countNumberOfTicketsAvailableWithDateOfBooking(Bill $bill){
         $dateOfBooking = $bill->getDateOfBooking();
-        $queryBuilder = $this->doctrine->getRepository('AppBundle:Ticket')->createQueryBuilder('bill');
-        $queryBuilder->select('bill.id');
-        $queryBuilder->where('bill.dateOfBooking = :dateOfBooking');
-        $queryBuilder->setParameter('dateOfBooking', $dateOfBooking);
-        return $queryBuilder->getQuery()->getSingleScalarResult() - 1000;
+        $queryBuilder = $this->doctrine->getRepository('AppBundle:Bill')->createQueryBuilder('bill')
+        ->select('bill.numberOfTickets')
+        ->where('bill.dateOfBooking > :dateOfBooking')
+            ->setParameter('dateOfBooking', $dateOfBooking)
+            ->getQuery();
+        $totalNumberOfTickets = 0;
+        $billsArray = $queryBuilder->getResult();
+        foreach ($billsArray as $bill){
+            $totalNumberOfTickets += $bill['numberOfTickets'];
+        }
+        return Ticket::MAX_NUMBER_OF_TICKETS_PER_DAY -  $totalNumberOfTickets;
     }
 }

@@ -62,6 +62,7 @@ class BillService{
     private function billStep1(){
         $request = $this->request->getCurrentRequest();
         $bill = $this->createBillIfNotInSession();
+        $this->billSessionService->newSessionIfDone($bill);
         $form = $this->form->create(BillStep1Type::class, $bill);
         $form->handleRequest($request);
         return $form;

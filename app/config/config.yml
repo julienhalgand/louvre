@@ -41,7 +41,7 @@ twig:
     strict_variables: "%kernel.debug%"
     form_theme:
     #Foundation
-     - foundation_5_layout.html.twig
+     - foundation_6_layout.html.twig
 
 # Doctrine Configuration
 doctrine:

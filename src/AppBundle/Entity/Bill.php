@@ -7,6 +7,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as BillAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Entity\Ticket;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 /**
  * Bill
  *
@@ -39,6 +41,32 @@ class Bill
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
+
+    /**
+     * @var string
+     * @ORM\Column(name="order_id", type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
+     */
+    private $orderId;
+
+    /**
+     * @return string
+     */
+    public function getOrderId(): string
+    {
+        return $this->orderId;
+    }
+    /**
+     * @var string
+     */
+    public function setOrderId(){
+        try{
+            $this->orderId = Uuid::uuid1()->toString();
+        }catch (UnsatisfiedDependencyException $e){
+            echo 'Caught exception: ' . $e->getMessage() . "\n";
+        }
+        return $this;
+    }
 
     /**
      * @var string
@@ -193,7 +221,7 @@ class Bill
      */
     public function setDateOfBooking($dateOfBooking)
     {
-        $this->dateOfBooking = \DateTime::createFromFormat('d/m/Y', $dateOfBooking);
+        $this->dateOfBooking = \DateTime::createFromFormat('d/m/Y', $dateOfBooking)->setTime(0,0,0);
 
         return $this;
     }
@@ -210,7 +238,15 @@ class Bill
         }
         return $this->dateOfBooking->format('d/m/Y');
     }
-
+    /**
+     * Get dateOfBooking
+     *
+     * @return \DateTime
+     */
+    public function getDateOfBookingObject()
+    {
+        return $this->dateOfBooking;
+    }
     /**
      * Set ticketType
      *
@@ -347,7 +383,7 @@ class Bill
     /**
      * @return string
      */
-    public function getStep(): string
+    public function getStep()
     {
         return $this->step;
     }
@@ -368,6 +404,7 @@ class Bill
     public function onPrePersist()
     {
         $this->setCreatedAt(new \DateTime("now"));
+        $this->setOrderId();
     }
 
     /**

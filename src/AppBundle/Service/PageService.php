@@ -56,6 +56,7 @@ class PageService{
         if($form->isSubmitted() && $form->isValid()){
             $bill = $form->getData();
            if($this->billManager->countNumberOfTicketsAvailableWithDateOfBooking($bill) > 0){
+               $bill->setStep("step1");
                return $this->redirectService->redirectToRoute('step2');
            }
 
@@ -73,7 +74,7 @@ class PageService{
         if($form->isSubmitted() && $form->isValid()){
             $bill = $form->getData();
             $this->ticketService->setPrices($bill);
-
+            if($bill->getStep() != "done"){$bill->setStep("step2");}
             return $this->redirectService->redirectToRoute('step3');
         }
         return new Response($this->twig->render('pages/step2.html.twig', [
@@ -87,6 +88,8 @@ class PageService{
         $form = $this->billService->renderForm('billStep3');
         $formsArray = $this->billService->renderForm('ticketsStep3');
         if($form->isSubmitted() && $form->isValid()){
+            $bill = $form->getData();
+            if($bill->getStep() != "done"){$bill->setStep("step3");}
             return $this->redirectService->redirectToRoute('payment');
         }
         return new Response($this->twig->render('pages/step3.html.twig', [
@@ -101,6 +104,19 @@ class PageService{
      */
     private function stripe(){
         $bill = $this->billSessionService->getBill();
+        if($bill->getStep() == "done"){
+            $this->setFlashMessage('warning', 'thankyou.commandAlreadyDone');
+            return $this->redirectService->redirectToRoute('thankyou');
+        }
+        if($bill->getTotalPrice() === 0){
+            $bill->setStripeId("Free");
+            $this->billManager->create($bill);
+            $bill->setStep("done");
+            $mailMessage = $this->emailService->sendMail($bill);
+            if($mailMessage){$this->setFlashMessage('success','thankyou.emailSuccess '.$bill->getEmail());}
+            else{$this->setFlashMessage('error', 'thankyou.emailerror'.$bill->getEmail().' thankyou.emailError2');}
+            return $this->redirectService->redirectToRoute('thankyou');
+        }
         $this->ticketService->isTickets($bill->getTickets());
         $form = $this->billService->renderForm('stripeForm');
         if($form->isSubmitted() && $form->isValid()){
@@ -110,14 +126,15 @@ class PageService{
                 $bill = $this->billSessionService->getBill();
                 $bill->setStripeId($charge->id);
                 $this->billManager->create($bill);
-                $this->billSessionService->saveInSession($bill);
+                $bill->setStep("done");
                 $mailMessage = $this->emailService->sendMail($bill);
-                //#1
+                if($mailMessage){$this->setFlashMessage('success','Un email contenant votre commande vous à été envoyé à l\'adresse'.$bill->getEmail());}
+                else{$this->setFlashMessage('error', 'L\'envoi de votre commande à échoué à l\'adresse '.$bill->getEmail().' merci de nous contacter munis de votre numéro de commande');}
                 return $this->redirectService->redirectToRoute('thankyou');
             }elseif (gettype($charge) == 'string'){
-                $this->request->getCurrentRequest()->getSession()->getFlashBag()->add('alert',$charge);
+                $this->setFlashMessage('alert',$charge);
             }else{
-                //#2
+                $this->setFlashMessage('alert', 'stripe.unknowChargeError');
             }
         }
         return new Response($this->twig->render('pages/stripe.html.twig', [
@@ -130,9 +147,14 @@ class PageService{
      */
     private function thankyou(){
         $bill = $this->billSessionService->getBill();
-        return new Response($this->twig->render('pages/thankyou.html.twig', [
-            'Bill' => $bill
-        ]));
+        if($bill->getStep() == "step3" || $bill->getStep() == "done"){
+            return new Response($this->twig->render('pages/thankyou.html.twig', [
+                'Bill' => $bill
+            ]));
+        }else{
+            if($bill->getStep() === null){$bill->setStep('step1');}
+            return $this->redirectService->redirectToRoute($bill->getStep());
+        }
     }
 
     /**
@@ -147,7 +169,15 @@ class PageService{
                 return $this->redirectService->redirectToRoute('step3');
             }
         }
-        $this->request->getCurrentRequest()->getSession()->getFlashBag()->add('warning', 'step3.oneTicketAtLeast');
+        $this->setFlashMessage('warning', 'step3.oneTicketAtLeast');
         return $this->redirectService->redirectToRoute('step3');
+    }
+
+    /**
+     *
+     */
+    private function setFlashMessage($level, $message){
+        $this->request->getCurrentRequest()->getSession()->getFlashBag()->add($level, $message);
+        return $this;
     }
 }

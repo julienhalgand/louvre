@@ -66,7 +66,11 @@ stripe:
     card_number: Numéro de votre carte de bleu
     expiration_date: Date d'expiration
     security_code: Code de sécurité
+  unknowChargeError: Une erreur inconnue est survenus
 thankyou:
   title: Merci pour votre commande
   billStripeId: Votre numéro de commande est le
   newBill: Nouvelle commande
+  commandAlreadyDone: Cette commande est déja terminée
+  emailError: L'envoi de votre commande à échoué à l'adresse
+  emailError2: merci de nous contacter munis de votre numéro de commande

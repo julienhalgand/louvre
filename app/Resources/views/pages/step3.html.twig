@@ -5,6 +5,9 @@
     <h2>{{ 'step3.stepNumber'|trans }}</h2>
   </div>
   <div class="row">
+    <div class="columns text-center">
+      {{ 'step3.orderDateOfBooking'|trans }} <strong>{{ Bill.getDateOfBookingObject | date('m/d/Y')}}</strong>
+    </div>
     <table>
       <thead>
         <tr>
@@ -21,7 +24,7 @@
         <tr>
           <td>{{ ticket.firstname }}</td>
           <td>{{ ticket.lastname }}</td>
-          <td>{{ ticket.dateOfBirth | date('m/d/Y') }}</td>
+          <td>{{ ticket.dateOfBirth }}</td>
           <td>{{ ticket.priceType|trans }}</td>
           <td>{{ ticket.price }}.00 €</td>
 

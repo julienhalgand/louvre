@@ -8,11 +8,6 @@
       <div data-abide-error class="alert callout" style="display: none;">
         <p><i class="fi-alert"></i>{{'form.formError'|trans}}</p>
       </div>
-      {% if (form_errors(form)) %}
-        <div class="alert callout">
-            {{ form_errors(form) }}
-        </div>
-      {% endif %}
       {% for key,ticket in form.tickets %}
           <label>{{ 'ticket'|trans }} {{key+1}}</label>
           {{ form_row(ticket.firstname) }}

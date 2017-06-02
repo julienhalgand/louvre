@@ -217,7 +217,7 @@ class Ticket
      */
     public function setDateOfBirth($dateOfBirth)
     {
-        $this->dateOfBirth = \DateTime::createFromFormat('d/m/Y',$dateOfBirth);
+        $this->dateOfBirth = \DateTime::createFromFormat('d/m/Y',$dateOfBirth)->setTime(0,0,0);
 
         return $this;
     }

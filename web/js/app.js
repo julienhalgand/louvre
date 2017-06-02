@@ -7,10 +7,11 @@ var $addticketLink = $('<a href="#" class="add_ticket_link">Add a ticket</a>');
 var $newLinkLi = $('<li></li>').append($addticketLink);
 
 $(function() {
-    var dateNow = new Date(),
+    var dateNowWithTime = new Date(),
+        dateNow = new Date(dateNowWithTime.getFullYear(),dateNowWithTime.getMonth(),dateNowWithTime.getDate(),0,0,0),
         lang = $('html').attr("lang");
     //Date picker date of booking
-   /* if (typeof holidays != "undefined") {
+    if (typeof holidays != "undefined") {
         $('#bill_step1_date_of_booking').fdatepicker({
             language: lang,
             format: 'dd/mm/yyyy',
@@ -24,15 +25,14 @@ $(function() {
             closeIcon: 'X',
             closeButton: true
         });
-    }*/
+    }
     //Date picker date of birth
     var $tickets = $('[id*="_date_of_birth"]');
-    console.log($tickets.length);
         for (i = 0; i < $tickets.length; i++) {
             $($tickets[i]).fdatepicker({
                 language: lang,
                 format: 'dd/mm/yyyy',
-                startDate: "1900-01-01",
+                startDate: "01-01-1900",
                 endDate: dateNow,
                 disableDblClickSelection: true,
                 leftArrow: '<<',
@@ -44,7 +44,32 @@ $(function() {
     $('#scrollTop').on('click', function() {
         e.preventDefault();
     });
-    cookieAdvisor();
+        if ($.cookie('cookieWarning') === undefined) {
+            $('body').append('<div id="cookieWarningRow"><div class="panel" id="cookieWarning">En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de Cookies pour réaliser des statistiques de visites anonymes. <a id="cookieWarningLink" target="_blank" href="http://www.google.com/intl/fr/policies/technologies/cookies/" rel="noindex">En savoir +</a> <button id="cookieConfirm" class="button">Ok</button></div></div>');
+            $('#cookieWarning').css({
+                'width': '100%',
+                'position': 'fixed',
+                'margin-left': 'auto',
+                'margin-right': 'auto',
+                'text-align': 'center',
+                'bottom': '0',
+                'padding': '20px',
+                'background': '#222',
+                'color': 'white',
+                //'border-radius'      	: '40px',
+                'opacity': '0.9',
+                'z-index': '5'
+            });
+            $('#cookieWarningLink').css({
+                'color': '#c82d00'
+            });
+        }
+
+        $('#cookieConfirm').click(function(e) {
+            e.preventDefault();
+            $.cookie('cookieWarning', 'viewed', { expires: 30 * 12 });
+            $('#cookieWarningRow').hide();
+        });
     /*
     var $collectionHolder;
 

@@ -41,7 +41,7 @@ class EmailService{
 
     public function sendMail(Bill $bill){
         $this->mailer->addAddress($bill->getEmail());
-        $this->mailer->Subject = 'Billeterie du Louvre - Vos billets pour le '+$bill->getDateOfBooking();
+        $this->mailer->Subject = 'Billetterie du Louvre - Vos billets pour le ' . $bill->getDateOfBooking();
         $this->mailer->Body= $this->renderBill($bill);
         $this->mailer->isHTML(true);
         $this->mailer->CharSet = 'UTF-8';
