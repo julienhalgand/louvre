@@ -14,7 +14,8 @@
           {{ form_row(ticket.lastname) }}
           {{ form_row(ticket.date_of_birth) }}
           {{ form_row(ticket.country_code) }}
-          {{ form_row(ticket.reduced_price) }}
+          {{ form_row(ticket.reduced_price, {'attr':{'data-selector':key}}) }}
+          <div class="callout secondary" id="identityCallout{{ key }}" style="display: none;">{{ 'step2.identityCardRequired'|trans }}</div>
       {% endfor %}
       <div class="row">
         <fieldset class="large-4 small-12 columns">

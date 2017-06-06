@@ -41,6 +41,16 @@ $(function() {
                 closeButton: true
             });
         }
+    //Reduced price
+    var $checkbox = $('[id*="_reduced_price"]');
+    $checkbox.click(function (e) {
+      var key = e.target.attributes.getNamedItem('data-selector').nodeValue;
+      if($("#identityCallout"+key).css('display') == 'none'){
+          $("#identityCallout"+key).show();
+      }else{
+          $("#identityCallout"+key).hide();
+      }
+    })
     $('#scrollTop').on('click', function() {
         e.preventDefault();
     });

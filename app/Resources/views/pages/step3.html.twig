@@ -4,13 +4,20 @@
   <div class="row">
     <h2>{{ 'step3.stepNumber'|trans }}</h2>
   </div>
+    <div class="row">
+      <div class="column menu-centered">
+        {{ 'step3.orderDateOfBooking'|trans }} <strong>{{ Bill.getDateOfBookingObject | date('d/m/Y')}}</strong>
+      </div>
+    </div>
+    </br>
+    <div class="row">
+      <div class="column menu-centered">
+        {{ 'step3.reservedForTicketType'|trans }} {{ Bill.ticketType|trans }}
+      </div>
+    </div>
+  </br>
+
   <div class="row">
-    <div class="columns text-center">
-      {{ 'step3.orderDateOfBooking'|trans }} <strong>{{ Bill.getDateOfBookingObject | date('m/d/Y')}}</strong>
-    </div></br>
-  <div class="columns text-center">
-    Billets réservés pour {{ Bill.ticketType|trans }}
-  </div>
   <table>
       <thead>
         <tr>
@@ -41,7 +48,7 @@
       {% endfor %}
       </tbody>
     </table>
-  </div>
+    </div>
 
   <div class="row">
     <h2 class="column menu-centered">{{ 'step3.totalPrice'|trans }}</h2>

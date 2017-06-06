@@ -2,15 +2,15 @@ home:
   title: Accueil
   schedulesPrices: Horaires et tarifs
 Date of booking: Jour de votre visite
-dateOfBookingPlaceHolder: jj/mm/yyyy
+dateOfBookingPlaceHolder: jj/mm/aaaa
 Email: Votre adresse email
-example@example.example: example@example.example
+example@example.example: exemple@exemple.exemple
 Journée: Journée
 Demi-journée: Demi-journée
 Ticket type: Type de ticket
 Number of tickets: Nombre de tickets
 Delete: Supprimer
-
+halfJourney: demi-journée
 Firstname: Prénom
 Lastname: Nom
 Date of birth: Date de naissance
@@ -47,6 +47,7 @@ step2:
   lastnamePlaceHolder: Nom de famille
   dateOfBirthPlaceHolder: Date de naissance
   reducedPrice: Je bénéficie d'un tarif réduit
+  identityCardRequired: Il sera nécessaire de présenter une preuve à l'entrée, votre carte étudiante, militaire ou équivalente, pour bénéficier du tarif réduit
 step3:
   title: Réservation étape 3
   stepNumber: Étape 3 sur 3
@@ -60,7 +61,8 @@ step3:
   deleteConfirmation: Êtes-vous sur de vouloir supprimer ce billet ?
   totalPrice: Total TTC
   oneTicketAtLeast: Vous devez avoir au moins un ticket dans votre commande
-  orderDateOfBooking: Votre commande pour le 
+  orderDateOfBooking: Votre commande pour le
+  reservedForTicketType: Billets réservés pour une
 stripe:
   title: Paiement
   placeholder:

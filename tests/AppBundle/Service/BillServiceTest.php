@@ -19,9 +19,9 @@ class BillServiceTest extends WebTestCase
         parent::__construct();
         $this->step1HydratorArray = array(
             'bill_step1[email]' => 'test@gmail.com',
-            'bill_step1[ticket_type]' => 'allJourney',
+            'bill_step1[ticket_type]' => 'halfJourney',
             'bill_step1[number_of_tickets]' => '1',
-            'bill_step1[date_of_booking]' => '06/06/2017'
+            'bill_step1[date_of_booking]' => '07/06/2017'
         );
     }
 
@@ -44,7 +44,6 @@ class BillServiceTest extends WebTestCase
         //dump($form);
         $this->step1Hydrator($form);
         $crawler = $client->submit($form);
-       dump($crawler);
         $this->assertTrue(
           $client->getResponse()->isRedirect('/fr/step2')
         );
@@ -57,46 +56,24 @@ class BillServiceTest extends WebTestCase
         //dump($client->getResponse()->getContent());
         $form = $crawler->selectButton('Passer à l\'étape suivante')->form();
         //dump($form);
+        $this->step1Hydrator($form);
         $form['bill_step1[email]'] = 'test@a.com';
-        $form['bill_step1[ticket_type]'] = 'allJourney';
-        $form['bill_step1[number_of_tickets]'] = '1';
-        $form['bill_step1[date_of_booking]'] = '09/07/2017';
         $crawler = $client->submit($form);
         //dump($crawler);
         $this->assertFalse(
             $client->getResponse()->isRedirect('/fr/step2')
         );
     }
-    //Wrong ticket_type
-    /*public function testStep1FrFalseTicketType(){
-        $client = static::createClient();
-
-        $crawler = $client->request('GET', '/fr/step1');
-        //dump($client->getResponse()->getContent());
-        $form = $crawler->selectButton('Passer à l\'étape suivante')->form();
-        //dump($form);
-        $form['bill_step1[email]'] = 'test@a.com';
-        $form['bill_step1[ticket_type]'] = 'wrongTicketType';
-        $form['bill_step1[number_of_tickets]'] = '1';
-        $form['bill_step1[date_of_booking]'] = '09/07/2017';
-        $crawler = $client->submit($form);
-        //dump($crawler);
-        $this->assertFalse(
-            $client->getResponse()->isRedirect('/fr/step2')
-        );
-    }*/
     //Wrong number of tickets
-    /*public function testStep1FrNegativeNumberOfTickets(){
+    public function testStep1FrNegativeNumberOfTickets(){
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/fr/step1');
         //dump($client->getResponse()->getContent());
         $form = $crawler->selectButton('Passer à l\'étape suivante')->form();
         //dump($form);
-        $form['bill_step1[email]'] = 'test@a.com';
-        $form['bill_step1[ticket_type]'] = 'allJourney';
+        $this->step1Hydrator($form);
         $form['bill_step1[number_of_tickets]'] = '-1';
-        $form['bill_step1[date_of_booking]'] = '09/07/2017';
         $crawler = $client->submit($form);
         //dump($crawler);
         $this->assertFalse(
@@ -111,10 +88,8 @@ class BillServiceTest extends WebTestCase
         //dump($client->getResponse()->getContent());
         $form = $crawler->selectButton('Passer à l\'étape suivante')->form();
         //dump($form);
-        $form['bill_step1[email]'] = 'test@a.com';
-        $form['bill_step1[ticket_type]'] = 'allJourney';
+        $this->step1Hydrator($form);
         $form['bill_step1[number_of_tickets]'] = '1001';
-        $form['bill_step1[date_of_booking]'] = '09/07/2017';
         $crawler = $client->submit($form);
         //dump($crawler);
         $this->assertFalse(
@@ -129,9 +104,7 @@ class BillServiceTest extends WebTestCase
         //dump($client->getResponse()->getContent());
         $form = $crawler->selectButton('Passer à l\'étape suivante')->form();
         //dump($form);
-        $form['bill_step1[email]'] = 'test@a.com';
-        $form['bill_step1[ticket_type]'] = 'allJourney';
-        $form['bill_step1[number_of_tickets]'] = '1';
+        $this->step1Hydrator($form);
         $form['bill_step1[date_of_booking]'] = '09/05/2017';
         $crawler = $client->submit($form);
         //dump($crawler);
@@ -147,14 +120,12 @@ class BillServiceTest extends WebTestCase
         //dump($client->getResponse()->getContent());
         $form = $crawler->selectButton('Passer à l\'étape suivante')->form();
         //dump($form);
-        $form['bill_step1[email]'] = 'test@a.com';
-        $form['bill_step1[ticket_type]'] = 'allJourney';
-        $form['bill_step1[number_of_tickets]'] = '1';
+        $this->step1Hydrator($form);
         $form['bill_step1[date_of_booking]'] = '09/07/2057';
         $crawler = $client->submit($form);
         //dump($crawler);
         $this->assertFalse(
             $client->getResponse()->isRedirect('/fr/step2')
         );
-    }*/
+    }
 }

@@ -28,11 +28,10 @@ class Bill
     const HOUR_END_OF_THE_DAY = 18;
 
     /**
-     * @var int
      *
-     * @ORM\Column(name="id", type="integer")
+     * @var string
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(name="id", type="guid")
      */
     private $id;
 
@@ -119,7 +118,7 @@ class Bill
 
     /**
     * @var ArrayCollection
-    * @ORM\OneToMany(targetEntity="Ticket", mappedBy="bill", orphanRemoval=true, cascade="persist")
+    * @ORM\OneToMany(targetEntity="Ticket", mappedBy="bill", orphanRemoval=true, cascade="all")
     * @Assert\All({
     *   @Assert\Type(type="AppBundle\Entity\Ticket")
     * },groups={"step2Bill"})
@@ -139,13 +138,25 @@ class Bill
     /**
      * Get id
      *
-     * @return int
+     * @return string
      */
     public function getId()
     {
         return $this->id;
     }
-
+    /**
+     * Set id
+     *
+     * @return string
+     */
+    public function setId(){
+        try{
+            $this->id = Uuid::uuid1()->toString();
+        }catch (UnsatisfiedDependencyException $e){
+            echo 'Caught exception: ' . $e->getMessage() . "\n";
+        }
+        return $this;
+    }
     /**
      * Set createdAt
      *
@@ -404,6 +415,7 @@ class Bill
      */
     public function onPrePersist()
     {
+        $this->setId();
         $this->setCreatedAt(new \DateTime("now"));
         $this->setOrderId();
     }

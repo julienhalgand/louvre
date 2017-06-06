@@ -5,6 +5,8 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as TicketAssert;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
 /**
  * Ticket
@@ -36,9 +38,8 @@ class Ticket
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(name="id", type="guid")
      */
     private $id;
 
@@ -145,11 +146,24 @@ class Ticket
     /**
      * Get id
      *
-     * @return int
+     * @return string
      */
     public function getId()
     {
         return $this->id;
+    }
+    /**
+     * Set id
+     *
+     * @return string
+     */
+    public function setId(){
+        try{
+            $this->id = Uuid::uuid1()->toString();
+        }catch (UnsatisfiedDependencyException $e){
+            echo 'Caught exception: ' . $e->getMessage() . "\n";
+        }
+        return $this;
     }
 
     /**
@@ -377,6 +391,7 @@ class Ticket
      */
     public function onPrePersist()
     {
+        $this->setId();
         $this->setCreatedAt(new \DateTime("now"));
     }
 }

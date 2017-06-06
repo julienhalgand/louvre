@@ -3,6 +3,8 @@ bill:
     validDateOfBooking: La date de réservation est invalide.
   ticketType:
     validTicketType: Vous ne pouvez plus réserver vos billets pour la journée passé 14h.
+  numberOfTickets:
+      validTicketsAvailable: Il n'y plus assez de tickets disponibles.
 ticket:
   reducedPrice:
     validReducedPrice: Une personne de moins de 12 ans, ne peut pas bénificier d'un tarif réduit.

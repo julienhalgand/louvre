@@ -24,10 +24,7 @@ class BillNotFoundExceptionListener
 
         if ($exception instanceof BillNotFoundException) {
             $event->setResponse($this->redirectService->redirectToRoute('step1'));
-        }/*elseif ($exception instanceof NoTicketsAvailableException){
-            // set Flash message
-            $event->setResponse($this->redirectService->redirectToRoute('step1'));
-        }*/elseif ($exception instanceof TicketsNotFoundException){
+        }elseif ($exception instanceof TicketsNotFoundException){
             $event->setResponse($this->redirectService->redirectToRoute('step2'));            
         }
     }

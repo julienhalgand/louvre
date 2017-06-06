@@ -21,7 +21,7 @@
             {{ 'thankyou.billStripeId'|trans }} <strong>{{ Bill.orderId }}</strong>
         </div>
         <div class="large-12 columns text-center">
-            {{ 'step3.orderDateOfBooking'|trans }} <strong>{{ Bill.getDateOfBookingObject | date('m/d/Y')}}</strong>
+            {{ 'step3.orderDateOfBooking'|trans }} <strong>{{ Bill.getDateOfBookingObject | date('d/m/Y')}}</strong>
         </div>
     </div></br>
     <div class="row">
