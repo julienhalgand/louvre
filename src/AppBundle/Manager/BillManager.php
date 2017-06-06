@@ -20,6 +20,7 @@ class BillManager{
 
     public function create(Bill $bill){
         $this->doctrine->persist($bill);
+        //dump($bill);
         $this->doctrine->flush();
         return $bill;
     }

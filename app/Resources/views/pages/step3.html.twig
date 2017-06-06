@@ -8,7 +8,10 @@
     <div class="columns text-center">
       {{ 'step3.orderDateOfBooking'|trans }} <strong>{{ Bill.getDateOfBookingObject | date('m/d/Y')}}</strong>
     </div></br>
-    <table>
+  <div class="columns text-center">
+    Billets réservés pour {{ Bill.ticketType|trans }}
+  </div>
+  <table>
       <thead>
         <tr>
           <th>{{'step3.firstname'|trans}}</th>

@@ -6,3 +6,6 @@ bill:
 ticket:
   reducedPrice:
     validReducedPrice: Une personne de moins de 12 ans, ne peut pas bénificier d'un tarif réduit.
+step1:
+    allJourneyAfter14h: Vous ne pouvez pas réserver un billet à la journée pour aujourd'hui après 14 heure.
+    toLateForReservationToday: Vous ne pouvez plus réserver de billet pour aujourd'hui après 18 heure.

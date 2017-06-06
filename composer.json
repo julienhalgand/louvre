@@ -35,7 +35,8 @@
         "stripe/stripe-php": "^4.9",
         "phpmailer/phpmailer": "^5.2",
         "league/oauth2-google": "^2.0",
-        "ramsey/uuid": "^3.6"
+        "ramsey/uuid": "^3.6",
+        "dompdf/dompdf": "^0.8.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

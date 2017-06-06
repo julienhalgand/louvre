@@ -25,13 +25,14 @@ class Bill
         'form.billStep1.halfJourney'   => self::TYPE_HALF_JOURNEY
     ];
     const HOUR_APPLY_HALF_JOURNEY_AFTER = 14;
+    const HOUR_END_OF_THE_DAY = 18;
 
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -45,28 +46,8 @@ class Bill
     /**
      * @var string
      * @ORM\Column(name="order_id", type="guid")
-     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $orderId;
-
-    /**
-     * @return string
-     */
-    public function getOrderId(): string
-    {
-        return $this->orderId;
-    }
-    /**
-     * @var string
-     */
-    public function setOrderId(){
-        try{
-            $this->orderId = Uuid::uuid1()->toString();
-        }catch (UnsatisfiedDependencyException $e){
-            echo 'Caught exception: ' . $e->getMessage() . "\n";
-        }
-        return $this;
-    }
 
     /**
      * @var string
@@ -123,6 +104,7 @@ class Bill
      * @Assert\NotBlank(groups={"step1Bill"})
      * @Assert\GreaterThanOrEqual(1,groups={"step1Bill"})
      * @Assert\LessThanOrEqual(1000,groups={"step1Bill"})
+     * @BillAssert\ValidNumberOfTickets(message="bill.numberOfTickets.validTicketsAvailable",groups={"step1Bill"})
      */
     private $numberOfTickets = 1;
 
@@ -130,6 +112,8 @@ class Bill
      * @var int
      *
      * @ORM\Column(name="total_price", type="integer")
+     * @Assert\NotBlank(groups={"step3Bill"})
+     * @Assert\GreaterThanOrEqual(0,groups={"step3Bill"})
      */
     private $totalPrice;
 
@@ -151,9 +135,7 @@ class Bill
     {
         $this->tickets = new ArrayCollection();
     }
-    function __clone() {
-        $this->tickets = clone $this->tickets;
-    }
+
     /**
      * Get id
      *
@@ -188,6 +170,25 @@ class Bill
         return $this->createdAt;
     }
 
+    /**
+     * @return string
+     */
+    public function getOrderId(): string
+    {
+        return $this->orderId;
+    }
+
+    /**
+     * @return string
+     */
+    public function setOrderId(){
+        try{
+            $this->orderId = Uuid::uuid1()->toString();
+        }catch (UnsatisfiedDependencyException $e){
+            echo 'Caught exception: ' . $e->getMessage() . "\n";
+        }
+        return $this;
+    }
     /**
      * Set email
      *

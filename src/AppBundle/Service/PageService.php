@@ -5,6 +5,8 @@ namespace AppBundle\Service;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Manager\BillManager;
+use Dompdf\Dompdf;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PageService{
     private $request;
@@ -55,11 +57,8 @@ class PageService{
         $form = $this->billService->renderForm('billStep1');
         if($form->isSubmitted() && $form->isValid()){
             $bill = $form->getData();
-           if($this->billManager->countNumberOfTicketsAvailableWithDateOfBooking($bill) > 0){
-               $bill->setStep("step1");
-               return $this->redirectService->redirectToRoute('step2');
-           }
-
+            $bill->setStep("step1");
+            return $this->redirectService->redirectToRoute('step2');
         }
         return new Response($this->twig->render('pages/step1.html.twig', [
             'form'          => $form->createView(),
@@ -113,8 +112,8 @@ class PageService{
             $this->billManager->create($bill);
             $bill->setStep("done");
             $mailMessage = $this->emailService->sendMail($bill);
-            if($mailMessage){$this->setFlashMessage('success','thankyou.emailSuccess '.$bill->getEmail());}
-            else{$this->setFlashMessage('error', 'thankyou.emailerror'.$bill->getEmail().' thankyou.emailError2');}
+            if($mailMessage){$this->setFlashMessage('success','Un email contenant votre commande vous à été envoyé à l\'adresse '.$bill->getEmail());}
+            else{$this->setFlashMessage('error', 'L\'envoi de votre commande à échoué à l\'adresse '.$bill->getEmail().' merci de nous contacter munis de votre numéro de commande');}
             return $this->redirectService->redirectToRoute('thankyou');
         }
         $this->ticketService->isTickets($bill->getTickets());
@@ -128,7 +127,7 @@ class PageService{
                 $this->billManager->create($bill);
                 $bill->setStep("done");
                 $mailMessage = $this->emailService->sendMail($bill);
-                if($mailMessage){$this->setFlashMessage('success','Un email contenant votre commande vous à été envoyé à l\'adresse'.$bill->getEmail());}
+                if($mailMessage){$this->setFlashMessage('success','Un email contenant votre commande vous à été envoyé à l\'adresse '.$bill->getEmail());}
                 else{$this->setFlashMessage('error', 'L\'envoi de votre commande à échoué à l\'adresse '.$bill->getEmail().' merci de nous contacter munis de votre numéro de commande');}
                 return $this->redirectService->redirectToRoute('thankyou');
             }elseif (gettype($charge) == 'string'){
@@ -180,4 +179,26 @@ class PageService{
         $this->request->getCurrentRequest()->getSession()->getFlashBag()->add($level, $message);
         return $this;
     }
+
+    /**
+     * @return pdf
+     */
+   /* public function billToPDF(){
+        $pdf = new Dompdf();
+        $bill = $this->billSessionService->getBill();
+        if($bill->getStep() == "done"){
+           /* return new Response($this->twig->render('email/bill.html.twig', [
+                'Bill' => $bill
+            ]));
+            $pdf->loadHtml($this->twig->render('pdf/bill.html.twig', [
+               'Bill' => $this->billSessionService->getBill()
+           ]));
+           $pdf->setPaper('A4', 'landscape');
+           $pdf->set_option('isHtml5ParserEnabled', true);
+           $pdf->render();
+           return $pdf->stream();
+        }
+        throw new NotFoundHttpException('Page not found', 'thankyou', 404);
+
+    }*/
 }

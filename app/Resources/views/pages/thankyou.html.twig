@@ -1,5 +1,17 @@
 {% extends 'base.html.twig' %}
 {% block title %}{{ 'thankyou.title'|trans }}{% endblock %}
+        {% block stylesheets %}
+            {% stylesheets 'css/app.css'
+            filter='cssrewrite' output='css/compiled/app.css' %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+            <style>@media print {
+                    .nonPrintable{
+                        display: none;
+                    }
+                }
+            </style>
+        {% endblock %}
 {% block body %}
     <div class="row">
         <h2>{{ 'thankyou.title'|trans }}</h2>
@@ -51,11 +63,13 @@
         </div>
         <div class="large-4 columns text-center">
             <a href="{{ path('step1') }}" class="button expanded">{{ 'thankyou.newBill'|trans }}</a>
-        </div>
-            <div class="large-4 columns text-center">
-            {% image 'images/Pages/pdf.svg' %}
-                <a class="nonPrintable" href="{{ path('billPDF') }}"><img width="60px" src="{{ asset_url }}" alt="Download to PDF" /></a>
-            {% endimage %}
-        </div>
+       </div>
+        {#
+    <div class="large-4 columns text-center">
+         {% image 'images/Pages/pdf.svg' %}
+             <a class="nonPrintable" href="{{ path('billPDF') }}"><img width="60px" src="{{ asset_url }}" alt="Download to PDF" /></a>
+         {% endimage %}
+    </div>
+    #}
     </div>
 {% endblock %}

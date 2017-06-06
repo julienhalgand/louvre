@@ -54,6 +54,12 @@ class Ticket
      *
      * @ORM\Column(name="lastname", type="string", length=50)
      * @Assert\NotBlank(groups={"step2Bill"})
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="step2.nameError",
+     *     groups={"step2Bill"}
+     * )
      * @Assert\Length(
      *     min = 1,
      *     max = 50,
@@ -67,6 +73,12 @@ class Ticket
      *
      * @ORM\Column(name="firstname", type="string", length=50)
      * @Assert\NotBlank(groups={"step2Bill"})
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="step2.firstnameError",
+     *     groups={"step2Bill"}
+     * )
      * @Assert\Length(
      *     min = 1,
      *     max = 50,
@@ -109,6 +121,8 @@ class Ticket
     /**
      * @var string
      * @ORM\Column(name="price_type", type="string")
+     * @Assert\NotBlank(groups={"step3Bill"})
+     * @Assert\GreaterThanOrEqual(0,groups={"step3Bill"})
      */
     private $priceType;
 
@@ -123,6 +137,8 @@ class Ticket
      * @var int
      *
      * @ORM\Column(name="price", type="integer")
+     * @Assert\NotBlank(groups={"step3Bill"})
+     * @Assert\GreaterThanOrEqual(0,groups={"step3Bill"})
      */
     private $price;
 

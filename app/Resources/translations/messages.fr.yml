@@ -75,3 +75,9 @@ thankyou:
   commandAlreadyDone: Cette commande est déja terminée
   emailError: L'envoi de votre commande à échoué à l'adresse
   emailError2: merci de nous contacter munis de votre numéro de commande
+  paymentMethod: Méthode de paiement
+  orderId: Id Stripe
+  adressEmail: Adresse email
+  orderDetails: Vos billets
+  total: Total
+  louvreTicketing: Billeterie du Louvre

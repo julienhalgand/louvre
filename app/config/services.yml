@@ -58,6 +58,12 @@ services:
             - { name: validator.constraint_validator }
         arguments:
             - '@app.ticket_service'
+    app.number_of_tickets_validator:
+        class: AppBundle\Validator\Constraints\ValidNumberOfTicketsValidator
+        tags:
+            - { name: validator.constraint_validator }
+        arguments:
+            - '@app.bill_manager'
     app.redirect_service:
         class: AppBundle\Service\RedirectService
         arguments:

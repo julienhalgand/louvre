@@ -47,6 +47,7 @@ class BillSessionService{
      */
     public function newSessionIfDone(Bill $bill){
         if($bill->getStep() === "done"){
+            $this->getCurrentSession()->remove('Bill');
             return $this->getCurrentSession()->set('Bill', new Bill());
         }
     }

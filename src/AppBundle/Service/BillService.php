@@ -30,15 +30,11 @@ class BillService{
         $this->billSessionService = $billSessionService;
         $this->ticketService = $ticketService;
     }
+
     /**
-    * Crée un nouvel objet Bill
-    */
-    private function newBill(){
-        return new Bill();
-    }
-    /**
-    * Rends un formulaire
-    */
+     * @param String $nameOfForm
+     * @return mixed
+     */
     public function renderForm(String $nameOfForm){
         if(is_callable(array($this, $nameOfForm))){
             return $this->$nameOfForm();
@@ -46,6 +42,10 @@ class BillService{
             return $this->createNotFoundException('This view doesn\'t exist.');
         }
     }
+
+    /**
+     * @return Bill
+     */
     private function createBillIfNotInSession(){
         $bill = $this->newBill();
         if($this->billSessionService->testIfBillInSession()){
@@ -55,10 +55,10 @@ class BillService{
         }
         return $bill;
     }
+
     /**
-    * Rends le formulaire de Bill step1
-    * @return FormFactory
-    */
+     * @return \Symfony\Component\Form\FormInterface
+     */
     private function billStep1(){
         $request = $this->request->getCurrentRequest();
         $bill = $this->createBillIfNotInSession();
@@ -67,10 +67,10 @@ class BillService{
         $form->handleRequest($request);
         return $form;
     }
+
     /**
-    * Rends le formulaire de Tickets
-    * @return FormFactory
-    */
+     * @return \Symfony\Component\Form\FormInterface
+     */
     private function billStep2(){
         $request = $this->request->getCurrentRequest();
         $bill = $this->billSessionService->getBill();
@@ -79,6 +79,10 @@ class BillService{
         $form->handleRequest($request);
         return $form;
     }
+
+    /**
+     * @return \Symfony\Component\Form\FormInterface
+     */
     private function billStep3(){
         $request = $this->request->getCurrentRequest();
         $bill = $this->billSessionService->getBill();
@@ -86,6 +90,10 @@ class BillService{
         $form->handleRequest($request);        
         return $form;
     }
+
+    /**
+     * @return array
+     */
     private function ticketsStep3(){
         $request = $this->request->getCurrentRequest();
         $bill = $this->billSessionService->getBill();
@@ -99,6 +107,10 @@ class BillService{
         }
         return $formsArray;
     }
+
+    /**
+     * @return array
+     */
     private function ticketsStep3Form(){
         $request = $this->request->getCurrentRequest();
         $bill = $this->billSessionService->getBill();
@@ -111,6 +123,10 @@ class BillService{
         }
         return $formsArray;
     }
+
+    /**
+     * @return \Symfony\Component\Form\FormInterface
+     */
     private function stripeForm(){
         $request = $this->request->getCurrentRequest();
         $this->billSessionService->getBill();
@@ -118,4 +134,11 @@ class BillService{
         $form->handleRequest($request);        
         return $form;
     }
+    /**
+     * @return Bill
+     */
+    private function newBill(){
+        return new Bill();
+    }
+
 }
