@@ -247,7 +247,7 @@ class Ticket
      */
     public function setDateOfBirth($dateOfBirth)
     {
-        $this->dateOfBirth = \DateTime::createFromFormat('d/m/Y',$dateOfBirth)->setTime(0,0,0);
+        $this->dateOfBirth = $dateOfBirth;
 
         return $this;
     }
@@ -259,10 +259,7 @@ class Ticket
      */
     public function getDateOfBirth()
     {
-        if($this->dateOfBirth === null){
-            return null;
-        }
-        return $this->dateOfBirth->format('d/m/Y');
+        return $this->dateOfBirth;
     }
     /**
      * Get getDateOfBirthObject

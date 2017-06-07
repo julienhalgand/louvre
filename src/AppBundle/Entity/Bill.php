@@ -233,7 +233,7 @@ class Bill
      */
     public function setDateOfBooking($dateOfBooking)
     {
-        $this->dateOfBooking = \DateTime::createFromFormat('d/m/Y', $dateOfBooking)->setTime(0,0,0);
+        $this->dateOfBooking = $dateOfBooking;
 
         return $this;
     }
@@ -245,10 +245,7 @@ class Bill
      */
     public function getDateOfBooking()
     {
-        if($this->dateOfBooking === null){
-            return null;
-        }
-        return $this->dateOfBooking->format('d/m/Y');
+        return $this->dateOfBooking;
     }
     /**
      * Get dateOfBooking

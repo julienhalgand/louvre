@@ -8,9 +8,11 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class BillStep1Type extends AbstractType
 {
@@ -20,11 +22,19 @@ class BillStep1Type extends AbstractType
                 $bill = $event->getData();
                 $dateOfBookingInputValue = '';
                 if ($bill->getDateOfBooking() != null){
-                    $dateOfBookingInputValue = $bill->getDateOfBooking();
+                    $dateOfBookingInputValue = $bill->getDateOfBooking()->format('d/m/Y');
                 }
                 $form = $event->getForm();
-                $form->add('date_of_booking', TextType::class, array('attr' => array('placeholder' => 'dateOfBookingPlaceHolder', 'value' => $dateOfBookingInputValue)));
-                })
+                $form->add('date_of_booking', DateTimeType::class, array(
+                    'widget' => 'single_text',
+                    'input' => 'datetime',
+                    'format' => 'dd/MM/yyyy',
+                    'attr' => array(
+                        'placeholder' => 'dateOfBookingPlaceHolder',
+
+                        'value' => $dateOfBookingInputValue)
+                    ));
+            })
             ->add('email', EmailType::class, array('attr' => array('placeholder' => 'example@example.example')))
             ->add('ticket_type', ChoiceType::class, array(
                 'choices' => Bill::TYPE_TICKET_TYPE_ARRAY

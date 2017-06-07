@@ -40,8 +40,8 @@
                 <tr>
                     <td>{{ ticket.firstname }}</td>
                     <td>{{ ticket.lastname }}</td>
-                    <td>{{ ticket.dateOfBirth}}</td>
-                    <td>{{ ticket.priceType|trans }}</td>
+                    <td>{{ ticket.dateOfBirth | date('d/m/Y')}}</td>
+                    <td>{{ ticket.priceType |trans }}</td>
                     <td>{{ ticket.price }}.00 €</td>
                 </tr>
             {% endfor %}
